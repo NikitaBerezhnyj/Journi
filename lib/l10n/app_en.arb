@@ -25,6 +25,9 @@
     "sunday": "Sunday",
     "sundayShort": "Sun",
 
+    "saving": "Saving...",
+    "saved": "Saved",
+
     "prompt_1": "How was your day?",
     "prompt_2": "What made you happy today?",
     "prompt_3": "What was the hardest part of your day?",

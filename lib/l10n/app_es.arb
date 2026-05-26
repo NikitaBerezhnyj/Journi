@@ -25,6 +25,9 @@
     "sunday": "Domingo",
     "sundayShort": "Dom",
 
+    "saving": "Saving...",
+    "saved": "Salvado",
+
     "prompt_1": "¿Cómo fue tu día?",
     "prompt_2": "¿Qué te hizo feliz hoy?",
     "prompt_3": "¿Qué fue lo más difícil de hoy?",

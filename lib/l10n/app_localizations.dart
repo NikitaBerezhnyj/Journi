@@ -223,6 +223,18 @@ abstract class AppLocalizations {
   /// **'Sun'**
   String get sundayShort;
 
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
   /// No description provided for @prompt_1.
   ///
   /// In en, this message translates to:

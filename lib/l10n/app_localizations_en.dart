@@ -72,6 +72,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sundayShort => 'Sun';
 
   @override
+  String get saving => 'Saving...';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
   String get prompt_1 => 'How was your day?';
 
   @override
