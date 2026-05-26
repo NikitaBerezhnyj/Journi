@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/diary_provider.dart';
 import '../utils/date_formatting.dart';
@@ -23,18 +22,21 @@ class DiaryEntryScreen extends ConsumerStatefulWidget {
 class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
   late final TextEditingController _controller;
   Timer? _debounce;
+  Timer? _savedTimer;
   _SaveStatus _saveStatus = _SaveStatus.idle;
   bool _initialized = false;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     _controller = TextEditingController();
+
     Future.microtask(() async {
       await ref
           .read(diaryEntryNotifierProvider.notifier)
           .loadForDate(widget.date);
-
       if (!mounted) return;
       final entry = ref.read(diaryEntryNotifierProvider).valueOrNull;
       if (entry != null && !_initialized) {
@@ -43,6 +45,7 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
         _controller.selection = TextSelection.collapsed(
           offset: entry.text.length,
         );
+        _focusNode.requestFocus();
       }
     });
   }
@@ -50,14 +53,17 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
   @override
   void dispose() {
     _debounce?.cancel();
+    _savedTimer?.cancel();
+    _focusNode.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   void _onTextChanged(String text) {
     _debounce?.cancel();
+    _savedTimer?.cancel();
 
-    _debounce = Timer(const Duration(milliseconds: 800), () async {
+    _debounce = Timer(const Duration(milliseconds: 1000), () async {
       if (!mounted) return;
 
       setState(() => _saveStatus = _SaveStatus.saving);
@@ -65,12 +71,11 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
       await ref.read(diaryEntryNotifierProvider.notifier).save(text);
 
       if (!mounted) return;
+
       setState(() => _saveStatus = _SaveStatus.saved);
 
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          setState(() => _saveStatus = _SaveStatus.idle);
-        }
+      _savedTimer = Timer(const Duration(seconds: 2), () {
+        if (mounted) setState(() => _saveStatus = _SaveStatus.idle);
       });
     });
   }
@@ -81,11 +86,15 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
 
+    final entryAsync = ref.watch(diaryEntryNotifierProvider);
+    final isLoading = entryAsync.isLoading;
+    final hasError = entryAsync.hasError;
+
     return Scaffold(
       appBar: AppHeader(
         showBackButton: true,
         title: formatFullDate(widget.date, t),
-        action: _buildSaveStatus(cs, theme),
+        action: _buildSaveStatus(cs, theme, t),
       ),
       body: SafeArea(
         child: Padding(
@@ -95,31 +104,40 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
             children: [
               const SizedBox(height: 12),
               Expanded(
-                child: ref.watch(diaryEntryNotifierProvider).when(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  error: (e, _) => Center(child: Text('$e')),
-                  data: (_) => TextField(
-                    controller: _controller,
-                    onChanged: _onTextChanged,
-                    maxLines: null,
-                    expands: true,
-                    textAlignVertical: TextAlignVertical.top,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      height: 1.6,
-                      color: cs.onSurface,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: DiaryPromptGenerator.getRandom(t),
-                      hintStyle: TextStyle(
-                        color: cs.onSurface.withOpacity(0.3),
+                child: Stack(
+                  children: [
+                    TextField(
+                      focusNode: _focusNode,
+                      controller: _controller,
+                      onChanged: _onTextChanged,
+                      maxLines: null,
+                      expands: true,
+                      textAlignVertical: TextAlignVertical.top,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        height: 1.6,
+                        color: cs.onSurface,
                       ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.zero,
+                      decoration: InputDecoration(
+                        hintText: DiaryPromptGenerator.getRandom(t),
+                        hintStyle: TextStyle(
+                          color: cs.onSurface.withOpacity(0.3),
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      ),
                     ),
-                    autofocus: true,
-                  ),
+
+                    if (isLoading)
+                      const Center(child: CircularProgressIndicator()),
+
+                    if (hasError)
+                      Center(
+                        child: Text(
+                          '${entryAsync.error}',
+                          style: TextStyle(color: cs.error),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -129,54 +147,60 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     );
   }
 
-  // Статус збереження замість кнопки
-  Widget _buildSaveStatus(ColorScheme cs, ThemeData theme) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: switch (_saveStatus) {
-        _SaveStatus.saving => Row(
-          key: const ValueKey('saving'),
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 14,
-              height: 14,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: cs.onSurface.withOpacity(0.4),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'Зберігається...',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: cs.onSurface.withOpacity(0.4),
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
+  Widget _buildSaveStatus(ColorScheme cs, ThemeData theme, AppLocalizations t,) {
+    return SizedBox(
+      width: 125,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+          child: child,
         ),
-        _SaveStatus.saved => Row(
-          key: const ValueKey('saved'),
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.check_circle_outline_rounded,
-              size: 16,
-              color: cs.primary.withOpacity(0.7),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              'Збережено',
-              style: theme.textTheme.bodySmall?.copyWith(
+        child: switch (_saveStatus) {
+          _SaveStatus.saving => Row(
+            key: const ValueKey('saving'),
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 14,
+                height: 14,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: cs.onSurface.withOpacity(0.4),
+                ),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                t.saving,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: cs.onSurface.withOpacity(0.4),
+                ),
+              ),
+            ],
+          ),
+          _SaveStatus.saved => Row(
+            key: const ValueKey('saved'),
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(
+                Icons.check_circle_outline_rounded,
+                size: 16,
                 color: cs.primary.withOpacity(0.7),
               ),
-            ),
-            const SizedBox(width: 8),
-          ],
-        ),
-        _SaveStatus.idle => const SizedBox(key: ValueKey('idle')),
-      },
+              const SizedBox(width: 6),
+              Text(
+                t.saved,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: cs.primary.withOpacity(0.7),
+                ),
+              ),
+            ],
+          ),
+          _SaveStatus.idle => const SizedBox.shrink(key: ValueKey('idle')),
+        },
+      ),
     );
   }
 }

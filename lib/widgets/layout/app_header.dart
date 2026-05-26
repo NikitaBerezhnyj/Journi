@@ -44,7 +44,10 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
             onPressed: onSettings,
           ),
         if (!showSettingsButton && action != null)
-          action!,
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Center(child: action!),
+          ),
       ],
     );
   }
