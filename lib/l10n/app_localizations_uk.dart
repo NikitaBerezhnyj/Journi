@@ -72,10 +72,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get sundayShort => 'Нд';
 
   @override
-  String get saving => 'Guardando...';
+  String get saving => 'Збереження...';
 
   @override
-  String get saved => 'Guardado';
+  String get saved => 'Збережено';
 
   @override
   String get prompt_1 => 'Як пройшов твій день?';

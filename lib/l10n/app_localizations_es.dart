@@ -72,10 +72,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sundayShort => 'Dom';
 
   @override
-  String get saving => 'Saving...';
+  String get saving => 'Guardando...';
 
   @override
-  String get saved => 'Salvado';
+  String get saved => 'Guardado';
 
   @override
   String get prompt_1 => '¿Cómo fue tu día?';
