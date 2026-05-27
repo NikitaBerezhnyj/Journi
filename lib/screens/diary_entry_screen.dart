@@ -37,14 +37,18 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
       await ref
           .read(diaryEntryNotifierProvider.notifier)
           .loadForDate(widget.date);
+
       if (!mounted) return;
+
       final entry = ref.read(diaryEntryNotifierProvider).valueOrNull;
+
       if (entry != null && !_initialized) {
         _initialized = true;
         _controller.text = entry.text;
         _controller.selection = TextSelection.collapsed(
           offset: entry.text.length,
         );
+
         _focusNode.requestFocus();
       }
     });
