@@ -7,10 +7,13 @@ import '../providers/diary_provider.dart';
 import '../providers/freeze_provider.dart';
 import '../providers/time_service_provider.dart';
 import '../types/streak_day.dart';
+import '../types/streak_state.dart';
 import '../widgets/layout/calendar_view.dart';
 import '../widgets/layout/calendar_view_skeleton.dart';
+import '../widgets/layout/freeze_info_bottom_sheet.dart';
 import '../widgets/layout/streak_view_skeleton.dart';
 import 'diary_entry_screen.dart';
+import 'freeze_intro_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -38,6 +41,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  void _showFreezeBottomSheet(BuildContext context, StreakState state) {
+    FreezeInfoBottomSheet.show(
+      context,
+      freezesAvailable: state.freezesAvailable,
+      daysWrittenAfterFreeze: state.daysWrittenAfterFreeze,
+      daysToRestore: state.daysToRestoreFreeze,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -59,7 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           children: [
             streakAsync.when(
-              data: (state) => StreakView(streakState: state, today: today),
+              data: (state) => StreakView(streakState: state, today: today, onFreezeTap: () => _showFreezeBottomSheet(context, state),),
               loading: () => const StreakViewSkeleton(),
               error: (e, _) => Text('Error: $e'),
             ),
@@ -109,6 +121,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           );
           ref.invalidate(allEntriesProvider);
+          
+          if (!mounted) return;
+          final shouldShow = await FreezeIntroScreen.shouldShow();
+          if (!mounted) return;
+          if (shouldShow) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const FreezeIntroScreen()),
+            );
+          }
         },
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,

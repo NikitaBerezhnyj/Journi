@@ -8,8 +8,9 @@ import 'day_view.dart';
 class StreakView extends StatelessWidget {
   final StreakState streakState;
   final DateTime today;
+  final VoidCallback onFreezeTap;
 
-  const StreakView({super.key, required this.streakState, required this.today});
+  const StreakView({super.key, required this.streakState, required this.today, required this.onFreezeTap});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class StreakView extends StatelessWidget {
                   ),
                   const Spacer(),
 
-                  _FreezeIndicator(streakState: streakState),
+                  _FreezeIndicator(streakState: streakState, onTap: onFreezeTap,),
                 ],
               ),
               const SizedBox(height: 16),
@@ -98,27 +99,30 @@ class StreakView extends StatelessWidget {
 
 class _FreezeIndicator extends StatelessWidget {
   final StreakState streakState;
+  final VoidCallback onTap;
 
-  const _FreezeIndicator({required this.streakState});
+  const _FreezeIndicator({required this.streakState, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-
-    return Row(
-      children: List.generate(2, (i) {
-        final isActive = i < streakState.freezesAvailable;
-        return Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Icon(
-            Icons.ac_unit_rounded,
-            size: 20,
-            color: isActive
-                ? cs.primary
-                : cs.onPrimaryContainer.withOpacity(0.25),
-          ),
-        );
-      }),
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: List.generate(2, (i) {
+          final isActive = i < streakState.freezesAvailable;
+          return Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Icon(
+              Icons.ac_unit_rounded,
+              size: 20,
+              color: isActive
+                  ? cs.primary
+                  : cs.onPrimaryContainer.withOpacity(0.25),
+            ),
+          );
+        }),
+      ),
     );
   }
 }
