@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../l10n/app_localizations.dart';
+
 class FreezeIntroScreen extends StatelessWidget {
   const FreezeIntroScreen({super.key});
 
@@ -20,6 +22,7 @@ class FreezeIntroScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
+    final t = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -42,7 +45,7 @@ class FreezeIntroScreen extends StatelessWidget {
               const SizedBox(height: 32),
 
               Text(
-                'Заморозки захищають твій streak',
+                t.freezeIntroTitle,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
@@ -52,7 +55,7 @@ class FreezeIntroScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               Text(
-                'Іноді буває форс-мажор. Тому у тебе є 2 заморозки — вони не дадуть streak згоріти якщо пропустиш день.',
+                t.freezeIntroDescription,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: cs.onSurface.withOpacity(0.65),
@@ -64,7 +67,7 @@ class FreezeIntroScreen extends StatelessWidget {
               _RuleItem(
                 icon: Icons.shield_outlined,
                 color: cs.primary,
-                text: 'Пропустив день — заморозка спрацьовує автоматично.',
+                text: t.freezeAutoRule,
                 theme: theme,
                 cs: cs,
               ),
@@ -72,7 +75,7 @@ class FreezeIntroScreen extends StatelessWidget {
               _RuleItem(
                 icon: Icons.replay_rounded,
                 color: cs.primary,
-                text: 'Пиши 3 дні поспіль — отримаєш одну заморозку назад.',
+                text: t.freezeRestoreRule,
                 theme: theme,
                 cs: cs,
               ),
@@ -80,7 +83,7 @@ class FreezeIntroScreen extends StatelessWidget {
               _RuleItem(
                 icon: Icons.local_fire_department_rounded,
                 color: cs.error,
-                text: 'Якщо заморозок немає і день пропущено — streak згорає.',
+                text: t.freezeBreakWarning,
                 theme: theme,
                 cs: cs,
               ),
@@ -101,7 +104,7 @@ class FreezeIntroScreen extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Зрозуміло',
+                    t.freezeGotIt,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: cs.onPrimary,
                       fontWeight: FontWeight.w600,

@@ -47,7 +47,7 @@ class StreakView extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    t.days_in_row,
+                    t.days_in_row(streakState.streakCount),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: cs.onPrimaryContainer.withOpacity(0.65),
                     ),

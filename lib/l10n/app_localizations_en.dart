@@ -9,7 +9,15 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get days_in_row => 'days in a row';
+  String days_in_row(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'day streak',
+      one: 'day streak',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get settingsTitle => 'Settings';
@@ -18,7 +26,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageLabel => 'Language';
 
   @override
-  String get themeLabel => 'Theme';
+  String get themeLabel => 'Appearance';
 
   @override
   String get systemThemeLabel => 'System';
@@ -75,95 +83,150 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saving => 'Saving...';
 
   @override
-  String get saved => 'Saved';
+  String get saved => 'Saved!';
+
+  @override
+  String get freezeTitle => 'Streak Freeze';
+
+  @override
+  String get freezeIntroTitle => 'Protect your streak';
+
+  @override
+  String get freezeIntroDescription => 'Life happens. You have 2 freezes to protect your streak if you miss a day.';
+
+  @override
+  String get freezeAutoRule => 'If you miss a day, a freeze will activate automatically.';
+
+  @override
+  String get freezeRestoreRule => 'Write for 3 days in a row to get one freeze back.';
+
+  @override
+  String get freezeAvailable => 'Freezes left';
+
+  @override
+  String get freezeOutOf => 'out of 2';
+
+  @override
+  String get freezeGotIt => 'Got it';
+
+  @override
+  String get freezeRestoreNextLabel => 'Next freeze restores in';
+
+  @override
+  String freezeDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '$count day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freezeExplanation => 'If you miss a day, a freeze keeps your progress safe.';
+
+  @override
+  String freezeRestoreExplanation(num days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'days',
+      one: 'day',
+    );
+    return 'Write for $days $_temp0 in a row to get a freeze back.';
+  }
+
+  @override
+  String get freezeBreakWarning => 'If you run out of freezes and miss a day, your streak resets.';
 
   @override
   String get prompt_1 => 'How was your day?';
 
   @override
-  String get prompt_2 => 'What made you happy today?';
+  String get prompt_2 => 'What brought a smile to your face?';
 
   @override
-  String get prompt_3 => 'What was the hardest part of your day?';
+  String get prompt_3 => 'What was the toughest part?';
 
   @override
-  String get prompt_4 => 'What did you learn today?';
+  String get prompt_4 => 'What\'s a small discovery you made?';
 
   @override
   String get prompt_5 => 'What are you grateful for today?';
 
   @override
-  String get prompt_6 => 'What moment stood out the most today?';
+  String get prompt_6 => 'What moment is worth holding onto?';
 
   @override
   String get prompt_7 => 'What did you do well today?';
 
   @override
-  String get prompt_8 => 'What could you have done better?';
+  String get prompt_8 => 'What would you change about today?';
 
   @override
-  String get prompt_9 => 'How are you feeling right now?';
+  String get prompt_9 => 'Describe your mood in a few words.';
 
   @override
-  String get prompt_10 => 'What surprised you today?';
+  String get prompt_10 => 'What caught you off guard today?';
 
   @override
   String get prompt_11 => 'What are you proud of today?';
 
   @override
-  String get prompt_12 => 'What drained your energy the most?';
+  String get prompt_12 => 'What drained your battery the most?';
 
   @override
-  String get prompt_13 => 'What gave you the most energy today?';
+  String get prompt_13 => 'What gave you a burst of energy?';
 
   @override
-  String get prompt_14 => 'What small step forward did you make today?';
+  String get prompt_14 => 'What tiny step forward did you take?';
 
   @override
-  String get prompt_15 => 'What did you procrastinate on today?';
+  String get prompt_15 => 'What did you keep putting off?';
 
   @override
-  String get prompt_16 => 'What was the most valuable part of your day?';
+  String get prompt_16 => 'What was the most valuable part?';
 
   @override
-  String get prompt_17 => 'Who did you enjoy talking to today?';
+  String get prompt_17 => 'Who was the best person to talk to?';
 
   @override
-  String get prompt_18 => 'What emotions did you feel today?';
+  String get prompt_18 => 'What emotion drove you the most?';
 
   @override
-  String get prompt_19 => 'What made today special?';
+  String get prompt_19 => 'What made today feel special?';
 
   @override
-  String get prompt_20 => 'What thought kept coming back today?';
+  String get prompt_20 => 'What thought was on repeat?';
 
   @override
-  String get prompt_21 => 'What did you do for yourself today?';
+  String get prompt_21 => 'What nice thing did you do for yourself?';
 
   @override
-  String get prompt_22 => 'What would you change about today?';
+  String get prompt_22 => 'What are you ready to let go of?';
 
   @override
-  String get prompt_23 => 'What lesson did today teach you?';
+  String get prompt_23 => 'What lesson did today leave behind?';
 
   @override
-  String get prompt_24 => 'What brought you peace today?';
+  String get prompt_24 => 'What brought you a moment of peace?';
 
   @override
-  String get prompt_25 => 'What motivated you today?';
+  String get prompt_25 => 'What kept you moving forward?';
 
   @override
-  String get prompt_26 => 'What did you realize about yourself today?';
+  String get prompt_26 => 'What did you realize about yourself?';
 
   @override
-  String get prompt_27 => 'What was the best moment today?';
+  String get prompt_27 => 'What was the most pleasant minute?';
 
   @override
-  String get prompt_28 => 'What do you want to remember from today?';
+  String get prompt_28 => 'What will you look back on in a year?';
 
   @override
-  String get prompt_29 => 'What caused you stress today?';
+  String get prompt_29 => 'What caused you the most stress?';
 
   @override
-  String get prompt_30 => 'What did you do even though you didn’t feel like it?';
+  String get prompt_30 => 'What did you do despite feeling lazy?';
 }

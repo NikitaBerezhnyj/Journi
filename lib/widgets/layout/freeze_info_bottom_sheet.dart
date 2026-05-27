@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class FreezeInfoBottomSheet extends StatelessWidget {
   final int freezesAvailable;
   final int daysWrittenAfterFreeze;
@@ -35,6 +37,7 @@ class FreezeInfoBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
+    final t = AppLocalizations.of(context)!;
     final daysLeft = daysToRestore - daysWrittenAfterFreeze;
 
     return Padding(
@@ -60,7 +63,7 @@ class FreezeInfoBottomSheet extends StatelessWidget {
               Icon(Icons.ac_unit_rounded, color: cs.primary, size: 24),
               const SizedBox(width: 10),
               Text(
-                'Заморозки streak',
+                t.freezeTitle,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -70,8 +73,8 @@ class FreezeInfoBottomSheet extends StatelessWidget {
           const SizedBox(height: 16),
 
           _StatusRow(
-            label: 'Доступно зараз',
-            value: '$freezesAvailable з 2',
+            label: t.freezeAvailable,
+            value: '$freezesAvailable ${t.freezeOutOf}',
             cs: cs,
             theme: theme,
           ),
@@ -79,8 +82,8 @@ class FreezeInfoBottomSheet extends StatelessWidget {
 
           if (freezesAvailable < 2) ...[
             _StatusRow(
-              label: 'До відновлення наступної',
-              value: '$daysLeft ${_daysWord(daysLeft)}',
+              label: t.freezeRestoreNextLabel,
+              value: t.freezeDays(daysLeft),
               cs: cs,
               theme: theme,
             ),
@@ -93,34 +96,27 @@ class FreezeInfoBottomSheet extends StatelessWidget {
 
           _InfoItem(
             icon: Icons.shield_outlined,
-            text:
-                'Якщо пропустиш день — заморозка автоматично захистить твій streak.',
+            text: t.freezeExplanation,
             cs: cs,
             theme: theme,
           ),
           const SizedBox(height: 10),
           _InfoItem(
             icon: Icons.replay_rounded,
-            text:
-                'Щоб відновити одну заморозку — пиши $daysToRestore дні поспіль.',
+            text: t.freezeRestoreExplanation(daysToRestore),
             cs: cs,
             theme: theme,
           ),
           const SizedBox(height: 10),
           _InfoItem(
             icon: Icons.warning_amber_rounded,
-            text: 'Якщо заморозок немає і день пропущено — streak згорає.',
+            text: t.freezeBreakWarning,
             cs: cs,
             theme: theme,
           ),
         ],
       ),
     );
-  }
-
-  String _daysWord(int n) {
-    if (n == 1) return 'дня';
-    return 'днів';
   }
 }
 

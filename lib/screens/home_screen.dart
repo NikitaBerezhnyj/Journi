@@ -121,7 +121,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           );
           ref.invalidate(allEntriesProvider);
-          
+
           if (!mounted) return;
           final shouldShow = await FreezeIntroScreen.shouldShow();
           if (!mounted) return;

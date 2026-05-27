@@ -100,8 +100,8 @@ abstract class AppLocalizations {
   /// No description provided for @days_in_row.
   ///
   /// In en, this message translates to:
-  /// **'days in a row'**
-  String get days_in_row;
+  /// **'{count, plural, one{day streak} other{day streak}}'**
+  String days_in_row(num count);
 
   /// No description provided for @settingsTitle.
   ///
@@ -118,7 +118,7 @@ abstract class AppLocalizations {
   /// No description provided for @themeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Theme'**
+  /// **'Appearance'**
   String get themeLabel;
 
   /// No description provided for @systemThemeLabel.
@@ -232,8 +232,86 @@ abstract class AppLocalizations {
   /// No description provided for @saved.
   ///
   /// In en, this message translates to:
-  /// **'Saved'**
+  /// **'Saved!'**
   String get saved;
+
+  /// No description provided for @freezeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak Freeze'**
+  String get freezeTitle;
+
+  /// No description provided for @freezeIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect your streak'**
+  String get freezeIntroTitle;
+
+  /// No description provided for @freezeIntroDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Life happens. You have 2 freezes to protect your streak if you miss a day.'**
+  String get freezeIntroDescription;
+
+  /// No description provided for @freezeAutoRule.
+  ///
+  /// In en, this message translates to:
+  /// **'If you miss a day, a freeze will activate automatically.'**
+  String get freezeAutoRule;
+
+  /// No description provided for @freezeRestoreRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Write for 3 days in a row to get one freeze back.'**
+  String get freezeRestoreRule;
+
+  /// No description provided for @freezeAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Freezes left'**
+  String get freezeAvailable;
+
+  /// No description provided for @freezeOutOf.
+  ///
+  /// In en, this message translates to:
+  /// **'out of 2'**
+  String get freezeOutOf;
+
+  /// No description provided for @freezeGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get freezeGotIt;
+
+  /// No description provided for @freezeRestoreNextLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next freeze restores in'**
+  String get freezeRestoreNextLabel;
+
+  /// No description provided for @freezeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} day} other{{count} days}}'**
+  String freezeDays(num count);
+
+  /// No description provided for @freezeExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'If you miss a day, a freeze keeps your progress safe.'**
+  String get freezeExplanation;
+
+  /// No description provided for @freezeRestoreExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Write for {days} {days, plural, one{day} other{days}} in a row to get a freeze back.'**
+  String freezeRestoreExplanation(num days);
+
+  /// No description provided for @freezeBreakWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'If you run out of freezes and miss a day, your streak resets.'**
+  String get freezeBreakWarning;
 
   /// No description provided for @prompt_1.
   ///
@@ -244,19 +322,19 @@ abstract class AppLocalizations {
   /// No description provided for @prompt_2.
   ///
   /// In en, this message translates to:
-  /// **'What made you happy today?'**
+  /// **'What brought a smile to your face?'**
   String get prompt_2;
 
   /// No description provided for @prompt_3.
   ///
   /// In en, this message translates to:
-  /// **'What was the hardest part of your day?'**
+  /// **'What was the toughest part?'**
   String get prompt_3;
 
   /// No description provided for @prompt_4.
   ///
   /// In en, this message translates to:
-  /// **'What did you learn today?'**
+  /// **'What\'s a small discovery you made?'**
   String get prompt_4;
 
   /// No description provided for @prompt_5.
@@ -268,7 +346,7 @@ abstract class AppLocalizations {
   /// No description provided for @prompt_6.
   ///
   /// In en, this message translates to:
-  /// **'What moment stood out the most today?'**
+  /// **'What moment is worth holding onto?'**
   String get prompt_6;
 
   /// No description provided for @prompt_7.
@@ -280,19 +358,19 @@ abstract class AppLocalizations {
   /// No description provided for @prompt_8.
   ///
   /// In en, this message translates to:
-  /// **'What could you have done better?'**
+  /// **'What would you change about today?'**
   String get prompt_8;
 
   /// No description provided for @prompt_9.
   ///
   /// In en, this message translates to:
-  /// **'How are you feeling right now?'**
+  /// **'Describe your mood in a few words.'**
   String get prompt_9;
 
   /// No description provided for @prompt_10.
   ///
   /// In en, this message translates to:
-  /// **'What surprised you today?'**
+  /// **'What caught you off guard today?'**
   String get prompt_10;
 
   /// No description provided for @prompt_11.
@@ -304,115 +382,115 @@ abstract class AppLocalizations {
   /// No description provided for @prompt_12.
   ///
   /// In en, this message translates to:
-  /// **'What drained your energy the most?'**
+  /// **'What drained your battery the most?'**
   String get prompt_12;
 
   /// No description provided for @prompt_13.
   ///
   /// In en, this message translates to:
-  /// **'What gave you the most energy today?'**
+  /// **'What gave you a burst of energy?'**
   String get prompt_13;
 
   /// No description provided for @prompt_14.
   ///
   /// In en, this message translates to:
-  /// **'What small step forward did you make today?'**
+  /// **'What tiny step forward did you take?'**
   String get prompt_14;
 
   /// No description provided for @prompt_15.
   ///
   /// In en, this message translates to:
-  /// **'What did you procrastinate on today?'**
+  /// **'What did you keep putting off?'**
   String get prompt_15;
 
   /// No description provided for @prompt_16.
   ///
   /// In en, this message translates to:
-  /// **'What was the most valuable part of your day?'**
+  /// **'What was the most valuable part?'**
   String get prompt_16;
 
   /// No description provided for @prompt_17.
   ///
   /// In en, this message translates to:
-  /// **'Who did you enjoy talking to today?'**
+  /// **'Who was the best person to talk to?'**
   String get prompt_17;
 
   /// No description provided for @prompt_18.
   ///
   /// In en, this message translates to:
-  /// **'What emotions did you feel today?'**
+  /// **'What emotion drove you the most?'**
   String get prompt_18;
 
   /// No description provided for @prompt_19.
   ///
   /// In en, this message translates to:
-  /// **'What made today special?'**
+  /// **'What made today feel special?'**
   String get prompt_19;
 
   /// No description provided for @prompt_20.
   ///
   /// In en, this message translates to:
-  /// **'What thought kept coming back today?'**
+  /// **'What thought was on repeat?'**
   String get prompt_20;
 
   /// No description provided for @prompt_21.
   ///
   /// In en, this message translates to:
-  /// **'What did you do for yourself today?'**
+  /// **'What nice thing did you do for yourself?'**
   String get prompt_21;
 
   /// No description provided for @prompt_22.
   ///
   /// In en, this message translates to:
-  /// **'What would you change about today?'**
+  /// **'What are you ready to let go of?'**
   String get prompt_22;
 
   /// No description provided for @prompt_23.
   ///
   /// In en, this message translates to:
-  /// **'What lesson did today teach you?'**
+  /// **'What lesson did today leave behind?'**
   String get prompt_23;
 
   /// No description provided for @prompt_24.
   ///
   /// In en, this message translates to:
-  /// **'What brought you peace today?'**
+  /// **'What brought you a moment of peace?'**
   String get prompt_24;
 
   /// No description provided for @prompt_25.
   ///
   /// In en, this message translates to:
-  /// **'What motivated you today?'**
+  /// **'What kept you moving forward?'**
   String get prompt_25;
 
   /// No description provided for @prompt_26.
   ///
   /// In en, this message translates to:
-  /// **'What did you realize about yourself today?'**
+  /// **'What did you realize about yourself?'**
   String get prompt_26;
 
   /// No description provided for @prompt_27.
   ///
   /// In en, this message translates to:
-  /// **'What was the best moment today?'**
+  /// **'What was the most pleasant minute?'**
   String get prompt_27;
 
   /// No description provided for @prompt_28.
   ///
   /// In en, this message translates to:
-  /// **'What do you want to remember from today?'**
+  /// **'What will you look back on in a year?'**
   String get prompt_28;
 
   /// No description provided for @prompt_29.
   ///
   /// In en, this message translates to:
-  /// **'What caused you stress today?'**
+  /// **'What caused you the most stress?'**
   String get prompt_29;
 
   /// No description provided for @prompt_30.
   ///
   /// In en, this message translates to:
-  /// **'What did you do even though you didn’t feel like it?'**
+  /// **'What did you do despite feeling lazy?'**
   String get prompt_30;
 }
 

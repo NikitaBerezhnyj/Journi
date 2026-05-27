@@ -9,7 +9,15 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get days_in_row => 'días seguidos';
+  String days_in_row(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'días seguidos',
+      one: 'día seguido',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get settingsTitle => 'Configuración';
@@ -18,7 +26,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get languageLabel => 'Idioma';
 
   @override
-  String get themeLabel => 'Tema';
+  String get themeLabel => 'Apariencia';
 
   @override
   String get systemThemeLabel => 'Sistema';
@@ -75,95 +83,150 @@ class AppLocalizationsEs extends AppLocalizations {
   String get saving => 'Guardando...';
 
   @override
-  String get saved => 'Guardado';
+  String get saved => '¡Guardado!';
 
   @override
-  String get prompt_1 => '¿Cómo fue tu día?';
+  String get freezeTitle => 'Congelación de racha';
 
   @override
-  String get prompt_2 => '¿Qué te hizo feliz hoy?';
+  String get freezeIntroTitle => 'Protege tu racha';
 
   @override
-  String get prompt_3 => '¿Qué fue lo más difícil de hoy?';
+  String get freezeIntroDescription => 'A veces surgen imprevistos. Tienes 2 congelaciones para proteger tu racha si fallas un día.';
 
   @override
-  String get prompt_4 => '¿Qué aprendiste hoy?';
+  String get freezeAutoRule => 'Si no puedes escribir, la congelación se activará sola.';
 
   @override
-  String get prompt_5 => '¿Por qué estás agradecido hoy?';
+  String get freezeRestoreRule => 'Escribe 3 días seguidos para recuperar una congelación.';
 
   @override
-  String get prompt_6 => '¿Qué momento destacó más hoy?';
+  String get freezeAvailable => 'Protecciones listas';
 
   @override
-  String get prompt_7 => '¿Qué hiciste bien hoy?';
+  String get freezeOutOf => 'de 2';
 
   @override
-  String get prompt_8 => '¿Qué podrías haber hecho mejor?';
+  String get freezeGotIt => 'Entendido';
 
   @override
-  String get prompt_9 => '¿Cómo te sientes ahora?';
+  String get freezeRestoreNextLabel => 'La siguiente se restaura en';
 
   @override
-  String get prompt_10 => '¿Qué te sorprendió hoy?';
+  String freezeDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count días',
+      one: '$count día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freezeExplanation => 'Si te saltas un día, una congelación protege tu progreso.';
+
+  @override
+  String freezeRestoreExplanation(num days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'días',
+      one: 'día',
+    );
+    return 'Escribe durante $days $_temp0 seguidos para recuperar una congelación.';
+  }
+
+  @override
+  String get freezeBreakWarning => 'Si te quedas sin protecciones y fallas, tu racha se reiniciará.';
+
+  @override
+  String get prompt_1 => '¿Cómo te fue hoy?';
+
+  @override
+  String get prompt_2 => '¿Qué te sacó una sonrisa?';
+
+  @override
+  String get prompt_3 => '¿Qué fue lo más duro de hoy?';
+
+  @override
+  String get prompt_4 => '¿Qué pequeño descubrimiento hiciste?';
+
+  @override
+  String get prompt_5 => '¿De qué estás agradecido hoy?';
+
+  @override
+  String get prompt_6 => '¿Qué momento vale la pena recordar?';
+
+  @override
+  String get prompt_7 => '¿En qué lo has clavado hoy?';
+
+  @override
+  String get prompt_8 => '¿Qué cambiarías de este día?';
+
+  @override
+  String get prompt_9 => 'Describe tu humor en pocas palabras.';
+
+  @override
+  String get prompt_10 => '¿Qué te pilló por sorpresa hoy?';
 
   @override
   String get prompt_11 => '¿De qué estás orgulloso hoy?';
 
   @override
-  String get prompt_12 => '¿Qué te quitó más energía hoy?';
+  String get prompt_12 => '¿Qué te agotó la batería hoy?';
 
   @override
-  String get prompt_13 => '¿Qué te dio más energía hoy?';
+  String get prompt_13 => '¿Qué te dio un subidón de energía?';
 
   @override
-  String get prompt_14 => '¿Qué pequeño paso adelante diste hoy?';
+  String get prompt_14 => '¿Qué pasito hacia adelante diste hoy?';
 
   @override
-  String get prompt_15 => '¿Qué pospusiste hoy?';
+  String get prompt_15 => '¿Qué estuviste posponiendo hoy?';
 
   @override
-  String get prompt_16 => '¿Qué fue lo más valioso del día?';
+  String get prompt_16 => '¿Qué fue lo más valioso hoy?';
 
   @override
-  String get prompt_17 => '¿Con quién disfrutaste hablar hoy?';
+  String get prompt_17 => '¿Con quién fue agradable hablar?';
 
   @override
-  String get prompt_18 => '¿Qué emociones sentiste hoy?';
+  String get prompt_18 => '¿Qué emoción te acompañó más?';
 
   @override
-  String get prompt_19 => '¿Qué hizo especial este día?';
+  String get prompt_19 => '¿Qué hizo especial a este día?';
 
   @override
-  String get prompt_20 => '¿Qué pensamiento volvió varias veces hoy?';
+  String get prompt_20 => '¿Qué pensamiento te rondó la cabeza?';
 
   @override
-  String get prompt_21 => '¿Qué hiciste por ti hoy?';
+  String get prompt_21 => '¿Qué detalle bonito hiciste por ti?';
 
   @override
-  String get prompt_22 => '¿Qué cambiarías de este día?';
+  String get prompt_22 => '¿Qué estás listo para dejar ir?';
 
   @override
-  String get prompt_23 => '¿Qué lección te dejó hoy?';
+  String get prompt_23 => '¿Qué lección importante te dejó hoy?';
 
   @override
-  String get prompt_24 => '¿Qué te dio paz hoy?';
+  String get prompt_24 => '¿Qué te ha dado un momento de paz?';
 
   @override
-  String get prompt_25 => '¿Qué te motivó hoy?';
+  String get prompt_25 => '¿Qué te motivó a seguir adelante?';
 
   @override
-  String get prompt_26 => '¿Qué aprendiste sobre ti hoy?';
+  String get prompt_26 => '¿Qué has descubierto sobre ti hoy?';
 
   @override
-  String get prompt_27 => '¿Cuál fue el mejor momento del día?';
+  String get prompt_27 => '¿Cuál fue el minuto más agradable?';
 
   @override
-  String get prompt_28 => '¿Qué quieres recordar de hoy?';
+  String get prompt_28 => '¿Qué recordarás de hoy en un año?';
 
   @override
-  String get prompt_29 => '¿Qué te causó estrés hoy?';
+  String get prompt_29 => '¿Qué te causó más estrés hoy?';
 
   @override
-  String get prompt_30 => '¿Qué hiciste aunque no tenías ganas?';
+  String get prompt_30 => '¿Qué lograste hacer a pesar de la pereza?';
 }
