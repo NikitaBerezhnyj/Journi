@@ -13,15 +13,12 @@ class StreakViewSkeleton extends StatelessWidget {
       child: Card(
         elevation: 0,
         color: cs.primaryContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Рядок з вогником і числом
               Row(
                 children: [
                   SkeletonBox(width: 28, height: 28, radius: 6),
@@ -32,7 +29,7 @@ class StreakViewSkeleton extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              // 7 днів
+
               Row(
                 children: List.generate(7, (i) => i).map((i) {
                   return Expanded(

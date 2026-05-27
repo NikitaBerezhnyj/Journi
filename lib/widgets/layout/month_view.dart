@@ -96,6 +96,7 @@ class MonthView extends StatelessWidget {
                 date: date,
                 today: today,
                 hasDiary: entry?.hasDiary ?? false,
+                isFrozen: entry?.isFrozen ?? false,
                 mode: DayViewMode.calendar,
                 onPress: () {
                   final hasDiary = entry?.hasDiary ?? false;

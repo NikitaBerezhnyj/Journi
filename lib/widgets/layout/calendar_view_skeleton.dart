@@ -21,27 +21,29 @@ class _MonthSkeleton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Назва місяця
           SkeletonBox(width: 120, height: 18, radius: 6),
           const SizedBox(height: 12),
-          // 5 тижнів по 7 днів
-          ...List.generate(5, (_) => Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Row(
-              children: List.generate(7, (i) => i).map((i) {
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
-                    child: SkeletonBox(
-                      width: double.infinity,
-                      height: 36,
-                      radius: 8,
+
+          ...List.generate(
+            5,
+            (_) => Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                children: List.generate(7, (i) => i).map((i) {
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: SkeletonBox(
+                        width: double.infinity,
+                        height: 36,
+                        radius: 8,
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );

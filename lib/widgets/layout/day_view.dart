@@ -8,6 +8,7 @@ class DayView extends StatelessWidget {
   final DateTime date;
   final DateTime today;
   final bool hasDiary;
+  final bool isFrozen;
   final VoidCallback onPress;
   final DayViewMode mode;
 
@@ -17,6 +18,7 @@ class DayView extends StatelessWidget {
     required this.today,
     required this.hasDiary,
     required this.onPress,
+    this.isFrozen = false,
     this.mode = DayViewMode.calendar,
   });
 
@@ -40,11 +42,11 @@ class DayView extends StatelessWidget {
   }
 
   Widget _buildStreakDay(
-      BuildContext context,
-      AppLocalizations t,
-      ColorScheme cs,
-      TextTheme textTheme,
-      ) {
+    BuildContext context,
+    AppLocalizations t,
+    ColorScheme cs,
+    TextTheme textTheme,
+  ) {
     final label = getWeekday(date, t);
 
     Color bgColor;
@@ -55,6 +57,10 @@ class DayView extends StatelessWidget {
       bgColor = cs.primary;
       iconColor = cs.onPrimary;
       icon = Icons.check_rounded;
+    } else if (isFrozen) {
+      bgColor = cs.primary;
+      iconColor = cs.onPrimary;
+      icon = Icons.ac_unit_rounded;
     } else if (_isToday) {
       bgColor = cs.onPrimary;
       iconColor = cs.primary;
@@ -79,11 +85,12 @@ class DayView extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: _isToday && !hasDiary
                   ? Border.all(color: cs.primary, width: 1.5)
-                  : Border.all(color: cs.outlineVariant.withOpacity(0.5), width: 0.5,)
+                  : Border.all(
+                      color: cs.outlineVariant.withOpacity(0.5),
+                      width: 0.5,
+                    ),
             ),
-            child: icon != null
-                ? Icon(icon, color: iconColor, size: 18)
-                : null,
+            child: icon != null ? Icon(icon, color: iconColor, size: 18) : null,
           ),
           const SizedBox(height: 4),
           Text(
@@ -93,8 +100,7 @@ class DayView extends StatelessWidget {
               color: hasDiary
                   ? cs.onPrimaryContainer
                   : cs.onSurface.withOpacity(0.4),
-              fontWeight:
-              _isToday ? FontWeight.w600 : FontWeight.normal,
+              fontWeight: _isToday ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ],
@@ -103,10 +109,10 @@ class DayView extends StatelessWidget {
   }
 
   Widget _buildCalendarDay(
-      BuildContext context,
-      ColorScheme cs,
-      TextTheme textTheme,
-      ) {
+    BuildContext context,
+    ColorScheme cs,
+    TextTheme textTheme,
+  ) {
     final isFuture = date.isAfter(today);
 
     Color bgColor;
@@ -117,6 +123,9 @@ class DayView extends StatelessWidget {
       textColor = cs.onPrimary;
     } else if (hasDiary) {
       bgColor = cs.primaryContainer.withOpacity(0.6);
+      textColor = cs.onPrimaryContainer;
+    } else if (isFrozen) {
+      bgColor = cs.primaryContainer;
       textColor = cs.onPrimaryContainer;
     } else {
       bgColor = Colors.transparent;
@@ -136,14 +145,20 @@ class DayView extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             alignment: Alignment.center,
-            child: Text(
-              '${date.day}',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: _isToday ? FontWeight.w700 : FontWeight.w500,
-                color: textColor,
-              ),
-            ),
+            child: isFrozen && !hasDiary && !_isToday
+                ? Icon(
+                    Icons.ac_unit_rounded,
+                    size: 24,
+                    color: cs.primary.withOpacity(0.7),
+                  )
+                : Text(
+                    '${date.day}',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: _isToday ? FontWeight.w700 : FontWeight.w500,
+                      color: textColor,
+                    ),
+                  ),
           ),
           const SizedBox(height: 3),
           if (hasDiary && !_isToday)
