@@ -43,17 +43,6 @@ npm install
 flutter run
 ```
 
-## Commit Messages
-
-The project uses [Husky](https://typicode.github.io/husky/) and [Commitlint](https://commitlint.js.org/) to validate commit messages.
-All commits should follow the **Conventional Commits** style, for example:
-
-```
-feat: add new donation screen
-fix: correct timer calculation
-chore: setup commitlint
-```
-
 ## License & Community Guidelines
 
 - [GNU GPL v3 License](LICENSE) — project license.
