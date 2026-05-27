@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../screens/diary_entry_screen.dart';
 import '../../types/streak_day.dart';
+import '../../utils/diary_utils.dart';
 import 'day_view.dart';
 
 class StreakView extends StatelessWidget {
@@ -71,7 +72,13 @@ class StreakView extends StatelessWidget {
                         today: today,
                         hasDiary: day.hasDiary,
                         onPress: () {
-                          if (!day.hasDiary) return;
+                          if (!canOpenDiary(
+                            date: day.date,
+                            today: today,
+                            hasDiary: day.hasDiary,
+                          )) {
+                            return;
+                          }
 
                           Navigator.push(
                             context,

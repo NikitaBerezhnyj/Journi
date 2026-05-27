@@ -3,6 +3,7 @@ import '../../l10n/app_localizations.dart';
 import '../../screens/diary_entry_screen.dart';
 import '../../types/streak_day.dart';
 import '../../utils/date_formatting.dart';
+import '../../utils/diary_utils.dart';
 import 'day_view.dart';
 
 class MonthView extends StatelessWidget {
@@ -58,7 +59,6 @@ class MonthView extends StatelessWidget {
               ),
             ),
           ),
-          // Рядок з днями тижня
           Row(
             children: weekDays.map((label) {
               return Expanded(
@@ -100,7 +100,13 @@ class MonthView extends StatelessWidget {
                 onPress: () {
                   final hasDiary = entry?.hasDiary ?? false;
 
-                  if (!hasDiary) return;
+                  if (!canOpenDiary(
+                    date: date,
+                    today: today,
+                    hasDiary: hasDiary,
+                  )) {
+                    return;
+                  }
 
                   Navigator.push(
                     context,
