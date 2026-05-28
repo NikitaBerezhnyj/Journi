@@ -6,7 +6,6 @@ import 'package:journi/widgets/layout/streak_view.dart';
 import '../providers/diary_provider.dart';
 import '../providers/freeze_provider.dart';
 import '../providers/time_service_provider.dart';
-import '../types/streak_day.dart';
 import '../types/streak_state.dart';
 import '../widgets/layout/calendar_view.dart';
 import '../widgets/layout/calendar_view_skeleton.dart';
@@ -31,12 +30,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         final diaryMap = next.valueOrNull;
         if (diaryMap == null) return;
         final today = ref.read(currentDateProvider);
-        await ref.read(freezeProvider.notifier).applyFreezeIfNeeded(
-          today: today,
-          diaryMap: {
-            for (final e in diaryMap.entries) e.key: e.value.hasDiary,
-          },
-        );
+        await ref
+            .read(freezeProvider.notifier)
+            .applyFreezeIfNeeded(
+              today: today,
+              diaryMap: {
+                for (final e in diaryMap.entries) e.key: e.value.hasDiary,
+              },
+            );
       }, fireImmediately: true);
     });
   }
@@ -53,11 +54,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     final today = ref.watch(currentDateProvider);
     final streakAsync = ref.watch(streakStateProvider);
-    final allEntriesAsync = ref.watch(streakDaysMapProvider);
-    final freezeAsync = ref.watch(freezeProvider);
+    final calendarAsync = ref.watch(calendarDaysProvider);
 
     return Scaffold(
       appBar: AppHeader(
@@ -71,40 +70,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           children: [
             streakAsync.when(
-              data: (state) => StreakView(streakState: state, today: today, onFreezeTap: () => _showFreezeBottomSheet(context, state),),
+              data: (state) => StreakView(
+                streakState: state,
+                today: today,
+                onFreezeTap: () => _showFreezeBottomSheet(context, state),
+              ),
               loading: () => const StreakViewSkeleton(),
               error: (e, _) => Text('Error: $e'),
             ),
-
             Expanded(
-              child: streakAsync.when(
-                data: (streakState) {
-                  final freezeData = freezeAsync.valueOrNull;
-                  final frozenDates = freezeData?.freezeUsedDates ?? {};
-                  return allEntriesAsync.when(
-                    data: (map) {
-                      final enrichedMap = {
-                        for (final e in map.entries)
-                          e.key: StreakDay(
-                            date: e.value.date,
-                            hasDiary: e.value.hasDiary,
-                            isFrozen: frozenDates.contains(e.key),
-                          ),
-
-                        for (final dateStr in frozenDates)
-                          if (!map.containsKey(dateStr))
-                            dateStr: StreakDay(
-                              date: DateTime.parse(dateStr),
-                              hasDiary: false,
-                              isFrozen: true,
-                            ),
-                      };
-                      return CalendarView(days: enrichedMap, today: today);
-                    },
-                    loading: () => const CalendarViewSkeleton(),
-                    error: (e, _) => Text('Error: $e'),
-                  );
-                },
+              child: calendarAsync.when(
+                data: (map) => CalendarView(days: map, today: today),
                 loading: () => const CalendarViewSkeleton(),
                 error: (e, _) => Text('Error: $e'),
               ),
@@ -121,7 +97,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           );
           ref.invalidate(allEntriesProvider);
-
           if (!mounted) return;
           final shouldShow = await FreezeIntroScreen.shouldShow();
           if (!mounted) return;

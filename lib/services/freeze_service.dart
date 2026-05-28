@@ -1,4 +1,6 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/date_utils.dart';
 
 class FreezeService {
   static final FreezeService instance = FreezeService._();
@@ -36,7 +38,7 @@ class FreezeService {
 
     for (int daysBack = 1; daysBack <= 7; daysBack++) {
       final day = today.subtract(Duration(days: daysBack));
-      final dayKey = _dateKey(day);
+      final dayKey = dateKey(day);
 
       if (diaryMap[dayKey] == true) break;
 
@@ -76,4 +78,6 @@ class FreezeService {
   }
 }
 
-String _dateKey(DateTime date) => date.toIso8601String().substring(0, 10);
+final freezeServiceProvider = Provider<FreezeService>((ref) {
+  return FreezeService.instance;
+});

@@ -20,10 +20,10 @@ class FreezeNotifier extends AsyncNotifier<FreezeState> {
   }
 
   Future<FreezeState> _load() async {
-    final available = await FreezeService.instance.getFreezesAvailable();
-    final usedDates = await FreezeService.instance.getFreezeUsedDates();
-    final daysWritten = await FreezeService.instance
-        .getDaysWrittenAfterFreeze();
+    final service = ref.read(freezeServiceProvider);
+    final available = await service.getFreezesAvailable();
+    final usedDates = await service.getFreezeUsedDates();
+    final daysWritten = await service.getDaysWrittenAfterFreeze();
     return FreezeState(
       freezesAvailable: available,
       freezeUsedDates: usedDates,
@@ -35,17 +35,16 @@ class FreezeNotifier extends AsyncNotifier<FreezeState> {
     required DateTime today,
     required Map<String, bool> diaryMap,
   }) async {
-    final applied = await FreezeService.instance.applyFreezeIfNeeded(
-      today: today,
-      diaryMap: diaryMap,
-    );
+    final applied = await ref
+        .read(freezeServiceProvider)
+        .applyFreezeIfNeeded(today: today, diaryMap: diaryMap);
     if (applied > 0) {
       state = AsyncData(await _load());
     }
   }
 
   Future<void> recordWritingDay() async {
-    await FreezeService.instance.recordWritingDay();
+    await ref.read(freezeServiceProvider).recordWritingDay();
     state = AsyncData(await _load());
   }
 }

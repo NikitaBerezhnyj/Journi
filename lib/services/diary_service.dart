@@ -1,5 +1,7 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/diary_entry.dart';
+import '../utils/date_utils.dart';
 import 'database_service.dart';
 
 class DiaryService {
@@ -8,14 +10,12 @@ class DiaryService {
 
   Future<Database> get _db => DatabaseService.instance.database;
 
-  String _dateKey(DateTime date) => date.toIso8601String().substring(0, 10);
-
   Future<DiaryEntry?> getEntryByDate(DateTime date) async {
     final db = await _db;
     final rows = await db.query(
       'diary_entries',
       where: 'date = ?',
-      whereArgs: [_dateKey(date)],
+      whereArgs: [dateKey(date)],
     );
     return rows.isEmpty ? null : DiaryEntry.fromMap(rows.first);
   }
@@ -42,3 +42,7 @@ class DiaryService {
     await db.delete('diary_entries', where: 'id = ?', whereArgs: [id]);
   }
 }
+
+final diaryServiceProvider = Provider<DiaryService>((ref) {
+  return DiaryService.instance;
+});

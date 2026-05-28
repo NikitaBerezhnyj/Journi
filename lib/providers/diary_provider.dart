@@ -10,14 +10,15 @@ import '../types/streak_day.dart';
 import '../types/streak_state.dart';
 
 final allEntriesProvider = FutureProvider<List<DiaryEntry>>((ref) {
-  return DiaryService.instance.getAllEntries();
+  return ref.read(diaryServiceProvider).getAllEntries();
+  ;
 });
 
 final entryForDateProvider = FutureProvider.family<DiaryEntry?, DateTime>((
   ref,
   date,
 ) {
-  return DiaryService.instance.getEntryByDate(date);
+  return ref.read(diaryServiceProvider).getEntryByDate(date);
 });
 
 final streakDaysMapProvider = Provider<AsyncValue<Map<String, StreakDay>>>((
@@ -51,43 +52,57 @@ final streakStateProvider = Provider<AsyncValue<StreakState>>((ref) {
   });
 });
 
-class DiaryEntryNotifier extends AsyncNotifier<DiaryEntry?> {
-  late DateTime _date;
+final calendarDaysProvider = Provider<AsyncValue<Map<String, StreakDay>>>((
+  ref,
+) {
+  final diaryAsync = ref.watch(streakDaysMapProvider);
+  final freezeAsync = ref.watch(freezeProvider);
 
-  void setDate(DateTime date) {
-    _date = date;
-  }
+  return diaryAsync.whenData((map) {
+    final frozenDates = freezeAsync.valueOrNull?.freezeUsedDates ?? {};
 
+    return {
+      for (final e in map.entries)
+        e.key: StreakDay(
+          date: e.value.date,
+          hasDiary: e.value.hasDiary,
+          isFrozen: frozenDates.contains(e.key),
+        ),
+      for (final dateStr in frozenDates)
+        if (!map.containsKey(dateStr))
+          dateStr: StreakDay(
+            date: DateTime.parse(dateStr),
+            hasDiary: false,
+            isFrozen: true,
+          ),
+    };
+  });
+});
+
+class DiaryEntryNotifier extends FamilyAsyncNotifier<DiaryEntry?, DateTime> {
   @override
-  Future<DiaryEntry?> build() async {
-    return null;
-  }
-
-  Future<void> loadForDate(DateTime date) async {
-    _date = date;
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(
-      () => DiaryService.instance.getEntryByDate(date),
-    );
+  Future<DiaryEntry?> build(DateTime date) async {
+    return ref.read(diaryServiceProvider).getEntryByDate(date);
   }
 
   Future<void> save(String text) async {
+    final date = arg;
     final current = state.valueOrNull;
     final isNew = current?.id == null;
     final now = DateTime.now();
+
     final entry = DiaryEntry(
       id: current?.id,
-      date: _date,
+      date: date,
       text: text,
       updatedAt: now,
     );
 
-    final saved = await DiaryService.instance.upsertEntry(entry);
+    final saved = await ref.read(diaryServiceProvider).upsertEntry(entry);
     state = AsyncData(saved);
 
     if (isNew) {
       await ref.read(freezeProvider.notifier).recordWritingDay();
-
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt('last_entry_saved_at', now.millisecondsSinceEpoch);
       await NotificationService.rescheduleAfterEntry(savedAt: now);
@@ -96,6 +111,6 @@ class DiaryEntryNotifier extends AsyncNotifier<DiaryEntry?> {
 }
 
 final diaryEntryNotifierProvider =
-    AsyncNotifierProvider<DiaryEntryNotifier, DiaryEntry?>(
+    AsyncNotifierProviderFamily<DiaryEntryNotifier, DiaryEntry?, DateTime>(
       DiaryEntryNotifier.new,
     );

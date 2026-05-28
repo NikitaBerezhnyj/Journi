@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/diary_provider.dart';
-import '../utils/date_formatting.dart';
+import '../utils/date_utils.dart';
 import '../utils/diary_prompt_generator.dart';
 import '../widgets/layout/app_header.dart';
 
@@ -15,8 +15,7 @@ class DiaryEntryScreen extends ConsumerStatefulWidget {
   const DiaryEntryScreen({super.key, required this.date});
 
   @override
-  ConsumerState<DiaryEntryScreen> createState() =>
-      _DiaryEntryScreenState();
+  ConsumerState<DiaryEntryScreen> createState() => _DiaryEntryScreenState();
 }
 
 class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
@@ -32,26 +31,6 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     super.initState();
     _focusNode = FocusNode();
     _controller = TextEditingController();
-
-    Future.microtask(() async {
-      await ref
-          .read(diaryEntryNotifierProvider.notifier)
-          .loadForDate(widget.date);
-
-      if (!mounted) return;
-
-      final entry = ref.read(diaryEntryNotifierProvider).valueOrNull;
-
-      if (entry != null && !_initialized) {
-        _initialized = true;
-        _controller.text = entry.text;
-        _controller.selection = TextSelection.collapsed(
-          offset: entry.text.length,
-        );
-
-        _focusNode.requestFocus();
-      }
-    });
   }
 
   @override
@@ -71,8 +50,9 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
       if (!mounted) return;
 
       setState(() => _saveStatus = _SaveStatus.saving);
-
-      await ref.read(diaryEntryNotifierProvider.notifier).save(text);
+      await ref
+          .read(diaryEntryNotifierProvider(widget.date).notifier)
+          .save(text);
 
       if (!mounted) return;
 
@@ -90,7 +70,19 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
 
-    final entryAsync = ref.watch(diaryEntryNotifierProvider);
+    ref.listen(diaryEntryNotifierProvider(widget.date), (_, next) {
+      final entry = next.valueOrNull;
+      if (entry != null && !_initialized) {
+        _initialized = true;
+        _controller.text = entry.text;
+        _controller.selection = TextSelection.collapsed(
+          offset: entry.text.length,
+        );
+        _focusNode.requestFocus();
+      }
+    });
+
+    final entryAsync = ref.watch(diaryEntryNotifierProvider(widget.date));
     final isLoading = entryAsync.isLoading;
     final hasError = entryAsync.hasError;
 
@@ -130,10 +122,8 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
                         contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                       ),
                     ),
-
                     if (isLoading)
                       const Center(child: CircularProgressIndicator()),
-
                     if (hasError)
                       Center(
                         child: Text(
@@ -151,15 +141,13 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     );
   }
 
-  Widget _buildSaveStatus(ColorScheme cs, ThemeData theme, AppLocalizations t,) {
+  Widget _buildSaveStatus(ColorScheme cs, ThemeData theme, AppLocalizations t) {
     return SizedBox(
       width: 125,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
-        transitionBuilder: (child, animation) => FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
+        transitionBuilder: (child, animation) =>
+            FadeTransition(opacity: animation, child: child),
         child: switch (_saveStatus) {
           _SaveStatus.saving => Row(
             key: const ValueKey('saving'),
