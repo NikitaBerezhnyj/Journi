@@ -1,16 +1,26 @@
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 
+String dateKey(DateTime date) => date.toIso8601String().substring(0, 10);
+
 String getWeekday(DateTime date, AppLocalizations t) {
   switch (date.weekday) {
-    case 1: return t.mondayShort;
-    case 2: return t.tuesdayShort;
-    case 3: return t.wednesdayShort;
-    case 4: return t.thursdayShort;
-    case 5: return t.fridayShort;
-    case 6: return t.saturdayShort;
-    case 7: return t.sundayShort;
-    default: return '';
+    case 1:
+      return t.mondayShort;
+    case 2:
+      return t.tuesdayShort;
+    case 3:
+      return t.wednesdayShort;
+    case 4:
+      return t.thursdayShort;
+    case 5:
+      return t.fridayShort;
+    case 6:
+      return t.saturdayShort;
+    case 7:
+      return t.sundayShort;
+    default:
+      return '';
   }
 }
 

@@ -1,6 +1,7 @@
 import '../types/streak_day.dart';
 import '../types/streak_state.dart';
 import '../services/freeze_service.dart';
+import 'date_utils.dart';
 
 StreakState computeStreakState({
   required DateTime today,
@@ -11,7 +12,7 @@ StreakState computeStreakState({
 }) {
   int streak = 0;
   DateTime current = today;
-  final todayKey = _dateKey(today);
+  final todayKey = dateKey(today);
   final hasToday = diaryMap[todayKey]?.hasDiary ?? false;
 
   if (!hasToday) {
@@ -19,7 +20,7 @@ StreakState computeStreakState({
   }
 
   while (true) {
-    final key = _dateKey(current);
+    final key = dateKey(current);
     final hasDiary = diaryMap[key]?.hasDiary ?? false;
     final isFrozen = freezeUsedDates.contains(key);
 
@@ -35,7 +36,7 @@ StreakState computeStreakState({
 
   final last7 = List.generate(7, (i) {
     final date = today.subtract(Duration(days: 6 - i));
-    final key = _dateKey(date);
+    final key = dateKey(date);
     final base = diaryMap[key] ?? StreakDay(date: date, hasDiary: false);
     return StreakDay(
       date: base.date,
@@ -52,5 +53,3 @@ StreakState computeStreakState({
     last7Days: last7,
   );
 }
-
-String _dateKey(DateTime date) => date.toIso8601String().substring(0, 10);

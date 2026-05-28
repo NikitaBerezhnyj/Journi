@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../screens/diary_entry_screen.dart';
 import '../../types/streak_day.dart';
-import '../../utils/date_formatting.dart';
+import '../../utils/date_utils.dart';
 import '../../utils/diary_utils.dart';
 import 'day_view.dart';
 
@@ -20,14 +20,13 @@ class MonthView extends StatelessWidget {
 
   List<DateTime?> _buildCalendarDays(DateTime month) {
     final first = DateTime(month.year, month.month, 1);
-    final daysInMonth =
-    DateUtils.getDaysInMonth(month.year, month.month);
+    final daysInMonth = DateUtils.getDaysInMonth(month.year, month.month);
     final offset = first.weekday - 1;
     return [
       ...List.filled(offset, null),
       ...List.generate(
         daysInMonth,
-            (i) => DateTime(month.year, month.month, i + 1),
+        (i) => DateTime(month.year, month.month, i + 1),
       ),
     ];
   }
@@ -79,8 +78,7 @@ class MonthView extends StatelessWidget {
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7,
               childAspectRatio: 0.75,
               mainAxisSpacing: 4,
@@ -89,8 +87,7 @@ class MonthView extends StatelessWidget {
             itemBuilder: (context, index) {
               final date = days[index];
               if (date == null) return const SizedBox();
-              final key =
-              date.toIso8601String().substring(0, 10);
+              final key = date.toIso8601String().substring(0, 10);
               final entry = daysMap[key];
               return DayView(
                 date: date,
@@ -115,15 +112,12 @@ class MonthView extends StatelessWidget {
                       builder: (_) => DiaryEntryScreen(date: date),
                     ),
                   );
-                }
+                },
               );
             },
           ),
           const SizedBox(height: 8),
-          Divider(
-            color: cs.outlineVariant.withOpacity(0.4),
-            height: 1,
-          ),
+          Divider(color: cs.outlineVariant.withOpacity(0.4), height: 1),
         ],
       ),
     );

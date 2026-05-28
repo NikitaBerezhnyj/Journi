@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
-import '../../utils/date_formatting.dart';
+import '../../utils/date_utils.dart';
 
 enum DayViewMode { streak, calendar }
 
