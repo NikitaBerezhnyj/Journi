@@ -102,9 +102,14 @@ class DiaryEntryNotifier extends FamilyAsyncNotifier<DiaryEntry?, DateTime> {
 
     if (isNew) {
       await ref.read(freezeProvider.notifier).recordWritingDay();
+      final freezeState = ref.read(freezeProvider).valueOrNull;
+      final freezesAvailable = freezeState?.freezesAvailable ?? 2;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt('last_entry_saved_at', now.millisecondsSinceEpoch);
-      await NotificationService.rescheduleAfterEntry(savedAt: now);
+      await NotificationService.rescheduleAfterEntry(
+        savedAt: now,
+        freezesAvailable: freezesAvailable,
+      );
     }
   }
 }

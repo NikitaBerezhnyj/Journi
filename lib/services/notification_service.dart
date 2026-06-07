@@ -11,7 +11,9 @@ class NotificationService {
   static const _channelId = 'journi_reminders';
   static const _id24h = 1;
   static const _idEvening = 2;
-  static const _idStreak = 3;
+  static const _idFreezeWarning = 3;
+  static const _idStreakLost = 4;
+
   static const int _defaultEveningHour = 21;
   static const int _defaultEveningMinute = 0;
 
@@ -31,12 +33,16 @@ class NotificationService {
     await _plugin.initialize(
       const InitializationSettings(android: android, iOS: ios),
     );
-
-    await _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+    await _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.requestNotificationsPermission();
   }
 
   static Future<void> rescheduleAfterEntry({
     required DateTime savedAt,
+    required int freezesAvailable,
   }) async {
     final prefs = await SharedPreferences.getInstance();
     final enabled = prefs.getBool('reminders_enabled') ?? true;
@@ -47,21 +53,26 @@ class NotificationService {
     await _scheduleAll(
       savedAt: savedAt,
       locale: locale,
+      freezesAvailable: freezesAvailable,
     );
   }
 
   static Future<void> rescheduleLocale({
     required DateTime lastSavedAt,
+    required int freezesAvailable,
   }) async {
     final pending = await _plugin.pendingNotificationRequests();
     if (pending.isEmpty) return;
-
-    await rescheduleAfterEntry(savedAt: lastSavedAt);
+    await rescheduleAfterEntry(
+      savedAt: lastSavedAt,
+      freezesAvailable: freezesAvailable,
+    );
   }
 
   static Future<void> _scheduleAll({
     required DateTime savedAt,
     required String locale,
+    required int freezesAvailable,
   }) async {
     await _plugin.cancelAll();
 
@@ -70,26 +81,42 @@ class NotificationService {
       title: NotificationStrings.get('reminder24hTitle', locale),
       body: NotificationStrings.get('reminder24hBody', locale),
       scheduledDate: savedAt.add(const Duration(hours: 24)),
-      channelName: NotificationStrings.get('channelName', locale),
-      channelDescription: NotificationStrings.get('channelDescription', locale),
+      locale: locale,
     );
 
     await _scheduleIfFuture(
       id: _idEvening,
       title: NotificationStrings.get('reminderEveningTitle', locale),
       body: NotificationStrings.get('reminderEveningBody', locale),
-      scheduledDate: _nextEvening(savedAt, _defaultEveningHour, _defaultEveningMinute),
-      channelName: NotificationStrings.get('channelName', locale),
-      channelDescription: NotificationStrings.get('channelDescription', locale),
+      scheduledDate: _nextEvening(
+        savedAt,
+        _defaultEveningHour,
+        _defaultEveningMinute,
+      ),
+      locale: locale,
     );
 
+    if (freezesAvailable > 0) {
+      final freezeWarningDay = savedAt.add(Duration(days: freezesAvailable));
+      await _scheduleIfFuture(
+        id: _idFreezeWarning,
+        title: NotificationStrings.get('reminderFreezeWarningTitle', locale),
+        body: NotificationStrings.get('reminderFreezeWarningBody', locale),
+        scheduledDate: _nextEvening(
+          freezeWarningDay.subtract(const Duration(days: 1)),
+          _defaultEveningHour,
+          _defaultEveningMinute,
+        ),
+        locale: locale,
+      );
+    }
+
     await _scheduleIfFuture(
-      id: _idStreak,
-      title: NotificationStrings.get('reminderStreakTitle', locale),
-      body: NotificationStrings.get('reminderStreakBody', locale),
-      scheduledDate: savedAt.add(const Duration(days: 3)),
-      channelName: NotificationStrings.get('channelName', locale),
-      channelDescription: NotificationStrings.get('channelDescription', locale),
+      id: _idStreakLost,
+      title: NotificationStrings.get('reminderStreakLostTitle', locale),
+      body: NotificationStrings.get('reminderStreakLostBody', locale),
+      scheduledDate: savedAt.add(Duration(days: freezesAvailable + 2)),
+      locale: locale,
     );
   }
 
@@ -98,15 +125,12 @@ class NotificationService {
     required String title,
     required String body,
     required DateTime scheduledDate,
-    required String channelName,
-    required String channelDescription,
+    required String locale,
   }) async {
     final now = DateTime.now();
-
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = now.add(const Duration(minutes: 1));
-    }
-
+    if (scheduledDate.isBefore(now)) return;
+    final channelName = NotificationStrings.get('channelName', locale);
+    final channelDesc = NotificationStrings.get('channelDescription', locale);
     await _plugin.zonedSchedule(
       id,
       title,
@@ -116,7 +140,7 @@ class NotificationService {
         android: AndroidNotificationDetails(
           _channelId,
           channelName,
-          channelDescription: channelDescription,
+          channelDescription: channelDesc,
           importance: Importance.high,
           priority: Priority.high,
         ),
@@ -124,27 +148,12 @@ class NotificationService {
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
-  static DateTime _nextEvening(
-      DateTime savedAt,
-      int hour,
-      int minute,
-      ) {
-    final nextDay = DateTime(
-      savedAt.year,
-      savedAt.month,
-      savedAt.day + 1,
-    );
-
-    return DateTime(
-      nextDay.year,
-      nextDay.month,
-      nextDay.day,
-      hour,
-      minute,
-    );
+  static DateTime _nextEvening(DateTime savedAt, int hour, int minute) {
+    final nextDay = DateTime(savedAt.year, savedAt.month, savedAt.day + 1);
+    return DateTime(nextDay.year, nextDay.month, nextDay.day, hour, minute);
   }
 }

@@ -36,8 +36,10 @@ class LocaleNotifier extends AsyncNotifier<Locale?> {
 
     final lastSavedMillis = prefs.getInt('last_entry_saved_at');
     if (lastSavedMillis != null) {
+      final available = prefs.getInt('freeze_available') ?? 2;
       await NotificationService.rescheduleLocale(
         lastSavedAt: DateTime.fromMillisecondsSinceEpoch(lastSavedMillis),
+        freezesAvailable: available,
       );
     }
   }
