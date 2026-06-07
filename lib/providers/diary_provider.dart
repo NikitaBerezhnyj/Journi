@@ -11,7 +11,6 @@ import '../types/streak_state.dart';
 
 final allEntriesProvider = FutureProvider<List<DiaryEntry>>((ref) {
   return ref.read(diaryServiceProvider).getAllEntries();
-  ;
 });
 
 final entryForDateProvider = FutureProvider.family<DiaryEntry?, DateTime>((

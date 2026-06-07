@@ -35,10 +35,10 @@ class FreezeNotifier extends AsyncNotifier<FreezeState> {
     required DateTime today,
     required Map<String, bool> diaryMap,
   }) async {
-    final applied = await ref
+    final changed = await ref
         .read(freezeServiceProvider)
         .applyFreezeIfNeeded(today: today, diaryMap: diaryMap);
-    if (applied > 0) {
+    if (changed) {
       state = AsyncData(await _load());
     }
   }

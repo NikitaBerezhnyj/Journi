@@ -29,35 +29,60 @@ class FreezeService {
     return prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
   }
 
-  Future<int> applyFreezeIfNeeded({
+  Future<bool> applyFreezeIfNeeded({
     required DateTime today,
     required Map<String, bool> diaryMap,
   }) async {
     final prefs = await SharedPreferences.getInstance();
+
+    DateTime? lastWrittenDay;
+    for (int daysBack = 1; daysBack <= 60; daysBack++) {
+      final day = today.subtract(Duration(days: daysBack));
+      final key = dateKey(day);
+      if (diaryMap[key] == true) {
+        lastWrittenDay = day;
+        break;
+      }
+    }
+
+    if (lastWrittenDay == null) return false;
+
+    final gapDays = today.difference(lastWrittenDay).inDays - 1;
+
+    if (gapDays <= 0) return false;
+
+    final available = await getFreezesAvailable();
+
+    if (gapDays > available) {
+      final currentMax = prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
+      if (currentMax == maxFreezes) return false;
+      await prefs.setInt(_keyFreezesAvailable, maxFreezes);
+      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      return true;
+    }
+
     int applied = 0;
 
-    for (int daysBack = 1; daysBack <= 7; daysBack++) {
-      final day = today.subtract(Duration(days: daysBack));
+    for (int i = 1; i <= gapDays; i++) {
+      final day = lastWrittenDay.add(Duration(days: i));
       final dayKey = dateKey(day);
 
-      if (diaryMap[dayKey] == true) break;
+      if (dayKey == dateKey(today)) break;
 
       final usedDates = await getFreezeUsedDates();
-
       if (usedDates.contains(dayKey)) continue;
 
-      final available = await getFreezesAvailable();
-
-      if (available <= 0) break;
+      final currentAvailable = await getFreezesAvailable();
+      if (currentAvailable <= 0) break;
 
       final newUsedDates = {...usedDates, dayKey};
       await prefs.setStringList(_keyFreezeUsedDates, newUsedDates.toList());
-      await prefs.setInt(_keyFreezesAvailable, available - 1);
+      await prefs.setInt(_keyFreezesAvailable, currentAvailable - 1);
       await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
       applied++;
     }
 
-    return applied;
+    return applied > 0;
   }
 
   Future<void> recordWritingDay() async {
