@@ -46,20 +46,37 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     _debounce?.cancel();
     _savedTimer?.cancel();
 
-    _debounce = Timer(const Duration(milliseconds: 1000), () async {
+    if (_saveStatus != _SaveStatus.idle) {
+      setState(() => _saveStatus = _SaveStatus.idle);
+    }
+
+    _debounce = Timer(const Duration(milliseconds: 700), () async {
       if (!mounted) return;
 
+      final startedAt = DateTime.now();
+
       setState(() => _saveStatus = _SaveStatus.saving);
+
       await ref
           .read(diaryEntryNotifierProvider(widget.date).notifier)
           .save(text);
+
+      const minSavingDuration = Duration(milliseconds: 250);
+
+      final elapsed = DateTime.now().difference(startedAt);
+
+      if (elapsed < minSavingDuration) {
+        await Future.delayed(minSavingDuration - elapsed);
+      }
 
       if (!mounted) return;
 
       setState(() => _saveStatus = _SaveStatus.saved);
 
-      _savedTimer = Timer(const Duration(seconds: 2), () {
-        if (mounted) setState(() => _saveStatus = _SaveStatus.idle);
+      _savedTimer = Timer(const Duration(seconds: 1), () {
+        if (mounted) {
+          setState(() => _saveStatus = _SaveStatus.idle);
+        }
       });
     });
   }
@@ -108,6 +125,7 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
                       onChanged: _onTextChanged,
                       maxLines: null,
                       expands: true,
+                      textCapitalization: TextCapitalization.sentences,
                       textAlignVertical: TextAlignVertical.top,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         height: 1.6,
