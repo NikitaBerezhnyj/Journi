@@ -48,41 +48,34 @@ class FreezeService {
     if (lastWrittenDay == null) return false;
 
     final gapDays = today.difference(lastWrittenDay).inDays - 1;
-
     if (gapDays <= 0) return false;
 
-    final available = await getFreezesAvailable();
+    int available = await getFreezesAvailable();
+    final usedDates = await getFreezeUsedDates();
+    int applied = 0;
 
-    if (gapDays > available) {
-      final currentMax = prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
-      if (currentMax == maxFreezes) return false;
-      await prefs.setInt(_keyFreezesAvailable, maxFreezes);
+    for (int i = 1; i <= gapDays; i++) {
+      if (available <= 0) break;
+
+      final day = lastWrittenDay.add(Duration(days: i));
+      if (dateKey(day) == dateKey(today)) break;
+
+      final dayKey = dateKey(day);
+      if (usedDates.contains(dayKey)) continue;
+
+      usedDates.add(dayKey);
+      available--;
+      applied++;
+    }
+
+    if (applied > 0) {
+      await prefs.setStringList(_keyFreezeUsedDates, usedDates.toList());
+      await prefs.setInt(_keyFreezesAvailable, available);
       await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
       return true;
     }
 
-    int applied = 0;
-
-    for (int i = 1; i <= gapDays; i++) {
-      final day = lastWrittenDay.add(Duration(days: i));
-      final dayKey = dateKey(day);
-
-      if (dayKey == dateKey(today)) break;
-
-      final usedDates = await getFreezeUsedDates();
-      if (usedDates.contains(dayKey)) continue;
-
-      final currentAvailable = await getFreezesAvailable();
-      if (currentAvailable <= 0) break;
-
-      final newUsedDates = {...usedDates, dayKey};
-      await prefs.setStringList(_keyFreezeUsedDates, newUsedDates.toList());
-      await prefs.setInt(_keyFreezesAvailable, currentAvailable - 1);
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
-      applied++;
-    }
-
-    return applied > 0;
+    return false;
   }
 
   Future<void> recordWritingDay() async {
