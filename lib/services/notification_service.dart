@@ -131,11 +131,12 @@ class NotificationService {
     if (scheduledDate.isBefore(now)) return;
     final channelName = NotificationStrings.get('channelName', locale);
     final channelDesc = NotificationStrings.get('channelDescription', locale);
+    final tzDate = tz.TZDateTime.from(scheduledDate, tz.local);
     await _plugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.from(scheduledDate, tz.local),
+      tzDate,
       NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,
@@ -148,7 +149,7 @@ class NotificationService {
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+      UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
