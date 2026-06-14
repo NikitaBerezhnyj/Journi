@@ -51,6 +51,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
+  Future<void> _openDiary(DateTime date) async {
+    ref.invalidate(diaryEntryNotifierProvider(date));
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => DiaryEntryScreen(date: date),
+      ),
+    );
+    ref.invalidate(allEntriesProvider);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -74,13 +85,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 streakState: state,
                 today: today,
                 onFreezeTap: () => _showFreezeBottomSheet(context, state),
+                onDayTap: _openDiary
               ),
               loading: () => const StreakViewSkeleton(),
               error: (e, _) => Text('Error: $e'),
             ),
             Expanded(
               child: calendarAsync.when(
-                data: (map) => CalendarView(days: map, today: today),
+                data: (map) => CalendarView(days: map, today: today, onDayTap: _openDiary),
                 loading: () => const CalendarViewSkeleton(),
                 error: (e, _) => Text('Error: $e'),
               ),
@@ -89,24 +101,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => DiaryEntryScreen(date: DateTime.now()),
-            ),
-          );
-          ref.invalidate(allEntriesProvider);
-          if (!mounted) return;
-          final shouldShow = await FreezeIntroScreen.shouldShow();
-          if (!mounted) return;
-          if (shouldShow) {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const FreezeIntroScreen()),
-            );
-          }
-        },
+          onPressed: () async {
+            await _openDiary(DateTime.now());
+            if (!mounted) return;
+            final shouldShow = await FreezeIntroScreen.shouldShow();
+            if (!mounted) return;
+            if (shouldShow) {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FreezeIntroScreen()),
+              );
+            }
+          },
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
         elevation: 3,

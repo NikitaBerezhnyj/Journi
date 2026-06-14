@@ -9,8 +9,9 @@ class StreakView extends StatelessWidget {
   final StreakState streakState;
   final DateTime today;
   final VoidCallback onFreezeTap;
+  final Function(DateTime) onDayTap;
 
-  const StreakView({super.key, required this.streakState, required this.today, required this.onFreezeTap});
+  const StreakView({super.key, required this.streakState, required this.today, required this.onFreezeTap, required this.onDayTap});
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +77,7 @@ class StreakView extends StatelessWidget {
                           )) {
                             return;
                           }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => DiaryEntryScreen(date: day.date),
-                            ),
-                          );
+                          onDayTap(day.date);
                         },
                         mode: DayViewMode.streak,
                       ),

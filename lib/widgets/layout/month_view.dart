@@ -10,12 +10,14 @@ class MonthView extends StatelessWidget {
   final DateTime month;
   final DateTime today;
   final Map<String, StreakDay> daysMap;
+  final Function(DateTime) onDayTap;
 
   const MonthView({
     super.key,
     required this.month,
     required this.today,
     required this.daysMap,
+    required this.onDayTap
   });
 
   List<DateTime?> _buildCalendarDays(DateTime month) {
@@ -106,12 +108,7 @@ class MonthView extends StatelessWidget {
                     return;
                   }
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => DiaryEntryScreen(date: date),
-                    ),
-                  );
+                  onDayTap(date);
                 },
               );
             },
