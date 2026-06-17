@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
-import '../../screens/diary_entry_screen.dart';
 import '../../types/streak_state.dart';
 import '../../utils/diary_utils.dart';
 import 'day_view.dart';
