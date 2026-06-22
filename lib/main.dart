@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journi/providers/app_lifecycle_provider.dart';
 import 'package:journi/services/notification_service.dart';
-import 'package:journi/widgets/initial_screen.dart';
+import 'package:journi/widgets/core/initial_screen.dart';
 import './providers/locale_provider.dart';
 import './providers/theme_provider.dart';
 import 'l10n/app_localizations.dart';

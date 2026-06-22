@@ -5,7 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../providers/diary_provider.dart';
 import '../utils/date_utils.dart';
 import '../utils/diary_prompt_generator.dart';
-import '../widgets/layout/app_header.dart';
+import '../widgets/core/app_header.dart';
 
 enum _SaveStatus { idle, saving, saved }
 
