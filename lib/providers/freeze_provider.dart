@@ -15,37 +15,32 @@ class FreezeState {
 
 class FreezeNotifier extends AsyncNotifier<FreezeState> {
   @override
-  Future<FreezeState> build() async {
-    return _load();
-  }
+  Future<FreezeState> build() async => _load();
 
-  Future<FreezeState> _load() async {
+  FreezeState _load() {
     final service = ref.read(freezeServiceProvider);
-    final available = await service.getFreezesAvailable();
-    final usedDates = await service.getFreezeUsedDates();
-    final daysWritten = await service.getDaysWrittenAfterFreeze();
     return FreezeState(
-      freezesAvailable: available,
-      freezeUsedDates: usedDates,
-      daysWrittenAfterFreeze: daysWritten,
+      freezesAvailable: service.getFreezesAvailable(),
+      freezeUsedDates: service.getFreezeUsedDates(),
+      daysWrittenAfterFreeze: service.getDaysWrittenAfterFreeze(),
     );
   }
 
-  Future<void> applyFreezeIfNeeded({
+  void applyFreezeIfNeeded({
     required DateTime today,
     required Map<String, bool> diaryMap,
-  }) async {
-    final changed = await ref
+  }) {
+    final changed = ref
         .read(freezeServiceProvider)
         .applyFreezeIfNeeded(today: today, diaryMap: diaryMap);
     if (changed) {
-      state = AsyncData(await _load());
+      state = AsyncData(_load());
     }
   }
 
-  Future<void> recordWritingDay() async {
-    await ref.read(freezeServiceProvider).recordWritingDay();
-    state = AsyncData(await _load());
+  void recordWritingDay() async {
+    ref.read(freezeServiceProvider).recordWritingDay();
+    state = AsyncData(_load());
   }
 }
 

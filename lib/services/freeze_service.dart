@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../providers/shared_prefs_provider.dart';
 import '../utils/date_utils.dart';
 
 class FreezeService {
-  static final FreezeService instance = FreezeService._();
-  FreezeService._();
+  FreezeService(this._prefs);
+
+  final SharedPreferences _prefs;
 
   static const _keyFreezesAvailable = 'freeze_available';
   static const _keyFreezeUsedDates = 'freeze_used_dates';
@@ -14,25 +16,21 @@ class FreezeService {
   static const int maxFreezes = 2;
   static const int daysToRestore = 3;
 
-  Future<int> getFreezesAvailable() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
+  int getFreezesAvailable() {
+    return _prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
   }
 
-  Future<Set<String>> getFreezeUsedDates() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getStringList(_keyFreezeUsedDates) ?? [];
+  Set<String> getFreezeUsedDates() {
+    final raw = _prefs.getStringList(_keyFreezeUsedDates) ?? [];
     return raw.toSet();
   }
 
-  Future<int> getDaysWrittenAfterFreeze() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
+  int getDaysWrittenAfterFreeze() {
+    return _prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
   }
 
-  Future<String?> getCurrentStreakStart() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_keyCurrentStreakStart);
+  String? getCurrentStreakStart() {
+    return _prefs.getString(_keyCurrentStreakStart);
   }
 
   DateTime? _findCurrentStreakStart({
@@ -67,16 +65,15 @@ class FreezeService {
     return streakStart;
   }
 
-  Future<bool> applyFreezeIfNeeded({
+  bool applyFreezeIfNeeded({
     required DateTime today,
     required Map<String, bool> diaryMap,
-  }) async {
-    final prefs = await SharedPreferences.getInstance();
-    final usedDates = await getFreezeUsedDates();
-    int available = await getFreezesAvailable();
+  }) {
+    final usedDates = getFreezeUsedDates();
+    int available = getFreezesAvailable();
 
     final todayKey = dateKey(today);
-    final savedStreakStartStr = await getCurrentStreakStart();
+    final savedStreakStartStr = getCurrentStreakStart();
     final savedStreakStart = savedStreakStartStr != null
         ? DateTime.tryParse(savedStreakStartStr)
         : null;
@@ -101,7 +98,7 @@ class FreezeService {
 
     if (!gapIsCoverable) {
       if (savedStreakStart != null) {
-        await _resetForNewStreak(prefs);
+        _resetForNewStreak();
         return true;
       }
 
@@ -126,52 +123,51 @@ class FreezeService {
       usedDates: usedDates,
     );
     if (currentStart != null) {
-      await prefs.setString(_keyCurrentStreakStart, dateKey(currentStart));
+      _prefs.setString(_keyCurrentStreakStart, dateKey(currentStart));
     }
 
     if (applied > 0) {
-      await prefs.setStringList(_keyFreezeUsedDates, usedDates.toList());
-      await prefs.setInt(_keyFreezesAvailable, available);
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      _prefs.setStringList(_keyFreezeUsedDates, usedDates.toList());
+      _prefs.setInt(_keyFreezesAvailable, available);
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
       return true;
     }
 
     if (currentStart != null && savedStreakStartStr != dateKey(currentStart)) {
-      await prefs.setString(_keyCurrentStreakStart, dateKey(currentStart));
+      _prefs.setString(_keyCurrentStreakStart, dateKey(currentStart));
       return true;
     }
 
     return false;
   }
 
-  Future<void> _resetForNewStreak(SharedPreferences prefs) async {
-    await prefs.setInt(_keyFreezesAvailable, maxFreezes);
-    await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
-    await prefs.remove(_keyCurrentStreakStart);
-    await prefs.setStringList(_keyFreezeUsedDates, []);
+  void _resetForNewStreak() {
+    _prefs.setInt(_keyFreezesAvailable, maxFreezes);
+    _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+    _prefs.remove(_keyCurrentStreakStart);
+    _prefs.setStringList(_keyFreezeUsedDates, []);
   }
 
-  Future<void> recordWritingDay() async {
-    final prefs = await SharedPreferences.getInstance();
-    final available = prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
+  void recordWritingDay() {
+    final available = _prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
 
     if (available >= maxFreezes) {
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
       return;
     }
 
-    final current = prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
+    final current = _prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
     final next = current + 1;
 
     if (next >= daysToRestore) {
-      await prefs.setInt(_keyFreezesAvailable, available + 1);
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      _prefs.setInt(_keyFreezesAvailable, available + 1);
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
     } else {
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, next);
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, next);
     }
   }
 }
 
 final freezeServiceProvider = Provider<FreezeService>((ref) {
-  return FreezeService.instance;
+  return FreezeService(ref.read(sharedPrefsProvider));
 });

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:journi/providers/shared_prefs_provider.dart';
 
 class ThemeNotifier extends AsyncNotifier<ThemeMode> {
   @override
   Future<ThemeMode> build() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = ref.read(sharedPrefsProvider);
     final theme = prefs.getString('theme');
     return theme != null
         ? ThemeMode.values.firstWhere(
@@ -16,8 +16,8 @@ class ThemeNotifier extends AsyncNotifier<ThemeMode> {
   }
 
   Future<void> setTheme(ThemeMode mode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('theme', mode.toString());
+    final prefs = ref.read(sharedPrefsProvider);
+    prefs.setString('theme', mode.toString());
     state = AsyncData(mode);
   }
 }

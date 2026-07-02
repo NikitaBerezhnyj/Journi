@@ -43,8 +43,8 @@ class NotificationService {
   static Future<void> rescheduleAfterEntry({
     required DateTime savedAt,
     required int freezesAvailable,
+    required SharedPreferences prefs,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
     final enabled = prefs.getBool('reminders_enabled') ?? true;
     if (!enabled) return;
 
@@ -60,12 +60,14 @@ class NotificationService {
   static Future<void> rescheduleLocale({
     required DateTime lastSavedAt,
     required int freezesAvailable,
+    required SharedPreferences prefs,
   }) async {
     final pending = await _plugin.pendingNotificationRequests();
     if (pending.isEmpty) return;
     await rescheduleAfterEntry(
       savedAt: lastSavedAt,
       freezesAvailable: freezesAvailable,
+      prefs: prefs,
     );
   }
 

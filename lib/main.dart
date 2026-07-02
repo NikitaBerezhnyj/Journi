@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journi/providers/app_lifecycle_provider.dart';
+import 'package:journi/providers/shared_prefs_provider.dart';
 import 'package:journi/services/notification_service.dart';
 import 'package:journi/widgets/core/initial_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './providers/locale_provider.dart';
 import './providers/theme_provider.dart';
 import 'l10n/app_localizations.dart';
@@ -14,9 +16,18 @@ void main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  final prefs = await SharedPreferences.getInstance();
+
   NotificationService.init();
 
-  runApp(const ProviderScope(child: JourniApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPrefsProvider.overrideWithValue(prefs),
+      ],
+      child: const JourniApp(),
+    ),
+  );
 }
 
 class JourniApp extends ConsumerWidget {

@@ -1,14 +1,12 @@
 import 'dart:ui';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:journi/providers/shared_prefs_provider.dart';
 import '../services/notification_service.dart';
 
 class LocaleNotifier extends AsyncNotifier<Locale?> {
   @override
   Future<Locale> build() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = ref.read(sharedPrefsProvider);
     final saved = prefs.getString('locale');
 
     if (saved != null) {
@@ -25,7 +23,7 @@ class LocaleNotifier extends AsyncNotifier<Locale?> {
   }
 
   Future<void> setLocale(Locale locale) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = ref.read(sharedPrefsProvider);
     final oldLocale = prefs.getString('locale');
 
     if (oldLocale == locale.languageCode) return;
@@ -37,9 +35,10 @@ class LocaleNotifier extends AsyncNotifier<Locale?> {
     final lastSavedMillis = prefs.getInt('last_entry_saved_at');
     if (lastSavedMillis != null) {
       final available = prefs.getInt('freeze_available') ?? 2;
-      await NotificationService.rescheduleLocale(
+      NotificationService.rescheduleLocale(
         lastSavedAt: DateTime.fromMillisecondsSinceEpoch(lastSavedMillis),
         freezesAvailable: available,
+        prefs: prefs,
       );
     }
   }
