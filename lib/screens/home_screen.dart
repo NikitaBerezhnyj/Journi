@@ -6,6 +6,7 @@ import 'package:journi/widgets/diary/streak_view.dart';
 import '../providers/diary_provider.dart';
 import '../providers/freeze_provider.dart';
 import '../providers/time_service_provider.dart';
+import '../types/streak_day.dart';
 import '../types/streak_state.dart';
 import '../widgets/diary/calendar_view.dart';
 import '../widgets/diary/calendar_view_skeleton.dart';
@@ -28,20 +29,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _streakSubscription = ref.listenManual(
-        streakDaysMapProvider, (_, next) async {
-          final diaryMap = next.valueOrNull;
-          if (diaryMap == null) return;
-          final today = ref.read(currentDateProvider);
-          ref
+      _streakSubscription = ref.listenManual(streakDaysMapProvider, (
+        _,
+        next,
+      ) async {
+        if (next is! AsyncData<Map<String, StreakDay>>) return;
+        final diaryMap = next.value;
+        final today = ref.read(currentDateProvider);
+
+        final Map<String, bool> mapForFreeze = {
+          for (final e in diaryMap.entries) e.key: e.value.hasDiary,
+        };
+
+        final streakIsZero = _computeStreakIsZero(diaryMap, today);
+        if (streakIsZero) {
+          await ref.read(freezeProvider.notifier).restoreFreezesIfNeeded();
+        } else {
+          await ref
               .read(freezeProvider.notifier)
-              .applyFreezeIfNeeded(
-                today: today,
-                diaryMap: {
-                  for (final e in diaryMap.entries) e.key: e.value.hasDiary,
-                },
-              );
-        }, fireImmediately: true);
+              .applyFreezeIfNeeded(today: today, diaryMap: mapForFreeze);
+        }
+
+        ref.invalidate(freezeProvider);
+      }, fireImmediately: true);
     });
   }
 
@@ -49,6 +59,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void dispose() {
     _streakSubscription?.close();
     super.dispose();
+  }
+
+  bool _computeStreakIsZero(Map<String, StreakDay> diaryMap, DateTime today) {
+    final todayKey = today.toIso8601String().substring(0, 10);
+    final yesterdayKey = today
+        .subtract(const Duration(days: 1))
+        .toIso8601String()
+        .substring(0, 10);
+
+    return !(diaryMap[todayKey]?.hasDiary == true ||
+        diaryMap[yesterdayKey]?.hasDiary == true);
   }
 
   void _showFreezeBottomSheet(BuildContext context, StreakState state) {
@@ -64,9 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.invalidate(diaryEntryNotifierProvider(date));
     await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => DiaryEntryScreen(date: date),
-      ),
+      MaterialPageRoute(builder: (_) => DiaryEntryScreen(date: date)),
     );
     ref.invalidate(allEntriesProvider);
   }
@@ -94,14 +113,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 streakState: state,
                 today: today,
                 onFreezeTap: () => _showFreezeBottomSheet(context, state),
-                onDayTap: _openDiary
+                onDayTap: _openDiary,
               ),
               loading: () => const StreakViewSkeleton(),
               error: (e, _) => Text('Error: $e'),
             ),
             Expanded(
               child: calendarAsync.when(
-                data: (map) => CalendarView(days: map, today: today, onDayTap: _openDiary),
+                data: (map) =>
+                    CalendarView(days: map, today: today, onDayTap: _openDiary),
                 loading: () => const CalendarViewSkeleton(),
                 error: (e, _) => Text('Error: $e'),
               ),
@@ -110,18 +130,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await _openDiary(DateTime.now());
-            if (!mounted) return;
-            final shouldShow = await FreezeIntroScreen.shouldShow();
-            if (!mounted) return;
-            if (shouldShow) {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const FreezeIntroScreen()),
-              );
-            }
-          },
+        onPressed: () async {
+          await _openDiary(DateTime.now());
+          if (!mounted) return;
+          final shouldShow = await FreezeIntroScreen.shouldShow();
+          if (!mounted) return;
+          if (shouldShow) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const FreezeIntroScreen()),
+            );
+          }
+        },
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
         elevation: 3,
