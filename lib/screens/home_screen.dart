@@ -97,6 +97,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final streakAsync = ref.watch(streakStateProvider);
     final calendarAsync = ref.watch(calendarDaysProvider);
 
+    final bothReady = streakAsync.hasValue && calendarAsync.hasValue;
+    final hasError = streakAsync.hasError || calendarAsync.hasError;
+
     return Scaffold(
       appBar: AppHeader(
         showSettingsButton: true,
@@ -108,22 +111,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            streakAsync.when(
-              data: (state) => StreakView(
-                streakState: state,
+            if (hasError)
+              Text('Error: ${streakAsync.error ?? calendarAsync.error}')
+            else if (!bothReady) ...[
+              const StreakViewSkeleton(),
+            ] else
+              StreakView(
+                streakState: streakAsync.value!,
                 today: today,
-                onFreezeTap: () => _showFreezeBottomSheet(context, state),
+                onFreezeTap: () =>
+                    _showFreezeBottomSheet(context, streakAsync.value!),
                 onDayTap: _openDiary,
               ),
-              loading: () => const StreakViewSkeleton(),
-              error: (e, _) => Text('Error: $e'),
-            ),
             Expanded(
-              child: calendarAsync.when(
-                data: (map) =>
-                    CalendarView(days: map, today: today, onDayTap: _openDiary),
-                loading: () => const CalendarViewSkeleton(),
-                error: (e, _) => Text('Error: $e'),
+              child: !bothReady
+                  ? const CalendarViewSkeleton()
+                  : CalendarView(
+                days: calendarAsync.value!,
+                today: today,
+                onDayTap: _openDiary,
               ),
             ),
           ],
