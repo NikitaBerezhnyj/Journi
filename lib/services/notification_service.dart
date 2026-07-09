@@ -43,8 +43,8 @@ class NotificationService {
   static Future<void> rescheduleAfterEntry({
     required DateTime savedAt,
     required int freezesAvailable,
+    required SharedPreferences prefs,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
     final enabled = prefs.getBool('reminders_enabled') ?? true;
     if (!enabled) return;
 
@@ -60,12 +60,14 @@ class NotificationService {
   static Future<void> rescheduleLocale({
     required DateTime lastSavedAt,
     required int freezesAvailable,
+    required SharedPreferences prefs,
   }) async {
     final pending = await _plugin.pendingNotificationRequests();
     if (pending.isEmpty) return;
     await rescheduleAfterEntry(
       savedAt: lastSavedAt,
       freezesAvailable: freezesAvailable,
+      prefs: prefs,
     );
   }
 
@@ -131,11 +133,12 @@ class NotificationService {
     if (scheduledDate.isBefore(now)) return;
     final channelName = NotificationStrings.get('channelName', locale);
     final channelDesc = NotificationStrings.get('channelDescription', locale);
+    final tzDate = tz.TZDateTime.from(scheduledDate, tz.local);
     await _plugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.from(scheduledDate, tz.local),
+      tzDate,
       NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,
@@ -148,7 +151,7 @@ class NotificationService {
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+      UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 

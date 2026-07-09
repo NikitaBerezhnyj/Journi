@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
-import '../../screens/diary_entry_screen.dart';
 import '../../types/streak_day.dart';
 import '../../utils/date_utils.dart';
 import '../../utils/diary_utils.dart';
@@ -10,12 +9,14 @@ class MonthView extends StatelessWidget {
   final DateTime month;
   final DateTime today;
   final Map<String, StreakDay> daysMap;
+  final Function(DateTime) onDayTap;
 
   const MonthView({
     super.key,
     required this.month,
     required this.today,
     required this.daysMap,
+    required this.onDayTap
   });
 
   List<DateTime?> _buildCalendarDays(DateTime month) {
@@ -106,12 +107,7 @@ class MonthView extends StatelessWidget {
                     return;
                   }
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => DiaryEntryScreen(date: date),
-                    ),
-                  );
+                  onDayTap(date);
                 },
               );
             },

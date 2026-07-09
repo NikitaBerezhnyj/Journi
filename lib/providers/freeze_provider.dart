@@ -15,19 +15,14 @@ class FreezeState {
 
 class FreezeNotifier extends AsyncNotifier<FreezeState> {
   @override
-  Future<FreezeState> build() async {
-    return _load();
-  }
+  Future<FreezeState> build() => _load();
 
   Future<FreezeState> _load() async {
     final service = ref.read(freezeServiceProvider);
-    final available = await service.getFreezesAvailable();
-    final usedDates = await service.getFreezeUsedDates();
-    final daysWritten = await service.getDaysWrittenAfterFreeze();
     return FreezeState(
-      freezesAvailable: available,
-      freezeUsedDates: usedDates,
-      daysWrittenAfterFreeze: daysWritten,
+      freezesAvailable: service.getFreezesAvailable(),
+      freezeUsedDates: await service.getFreezeUsedDates(),
+      daysWrittenAfterFreeze: service.getDaysWrittenAfterFreeze(),
     );
   }
 
@@ -45,6 +40,11 @@ class FreezeNotifier extends AsyncNotifier<FreezeState> {
 
   Future<void> recordWritingDay() async {
     await ref.read(freezeServiceProvider).recordWritingDay();
+    state = AsyncData(await _load());
+  }
+
+  Future<void> restoreFreezesIfNeeded() async {
+    await ref.read(freezeServiceProvider).restoreFreezesIfNeeded();
     state = AsyncData(await _load());
   }
 }

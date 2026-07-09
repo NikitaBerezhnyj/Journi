@@ -6,11 +6,13 @@ import 'month_view.dart';
 class CalendarView extends StatelessWidget {
   final Map<String, StreakDay> days;
   final DateTime today;
+  final Function(DateTime) onDayTap;
 
   const CalendarView({
     super.key,
     required this.days,
-    required this.today
+    required this.today,
+    required this.onDayTap
   });
 
   @override
@@ -30,6 +32,7 @@ class CalendarView extends StatelessWidget {
           month: months[index],
           today: today,
           daysMap: days,
+          onDayTap: onDayTap,
         );
       },
     );

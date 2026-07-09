@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../screens/home_screen.dart';
-import '../screens/splash_screen.dart';
+import '../../screens/home_screen.dart';
+import '../../screens/splash_screen.dart';
 
 class InitialScreen extends ConsumerStatefulWidget {
   const InitialScreen({super.key});

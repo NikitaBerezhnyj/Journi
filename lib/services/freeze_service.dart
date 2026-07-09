@@ -1,45 +1,45 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import '../providers/shared_prefs_provider.dart';
+import '../services/database_service.dart';
 import '../utils/date_utils.dart';
 
 class FreezeService {
-  static final FreezeService instance = FreezeService._();
-  FreezeService._();
+  FreezeService(this._prefs);
 
-  static const _keyFreezesAvailable = 'freeze_available';
-  static const _keyFreezeUsedDates = 'freeze_used_dates';
-  static const _keyDaysWrittenAfterFreeze = 'freeze_days_written_after';
+  final SharedPreferences _prefs;
 
   static const int maxFreezes = 2;
   static const int daysToRestore = 3;
 
-  Future<int> getFreezesAvailable() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
-  }
+  static const _keyFreezesAvailable = 'freeze_available';
+  static const _keyDaysWrittenAfterFreeze = 'freeze_days_written_after';
+
+  int getFreezesAvailable() =>
+      _prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
+
+  int getDaysWrittenAfterFreeze() =>
+      _prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
 
   Future<Set<String>> getFreezeUsedDates() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getStringList(_keyFreezeUsedDates) ?? [];
-    return raw.toSet();
-  }
-
-  Future<int> getDaysWrittenAfterFreeze() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
+    final db = await DatabaseService.instance.database;
+    final rows = await db.query('freeze_days');
+    return rows.map((r) => r['date'] as String).toSet();
   }
 
   Future<bool> applyFreezeIfNeeded({
     required DateTime today,
     required Map<String, bool> diaryMap,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
+    final db = await DatabaseService.instance.database;
+    final usedDates = await getFreezeUsedDates();
+    int available = getFreezesAvailable();
 
     DateTime? lastWrittenDay;
-    for (int daysBack = 1; daysBack <= 60; daysBack++) {
-      final day = today.subtract(Duration(days: daysBack));
-      final key = dateKey(day);
-      if (diaryMap[key] == true) {
+    for (int i = 1; i <= 365; i++) {
+      final day = today.subtract(Duration(days: i));
+      if (diaryMap[dateKey(day)] == true) {
         lastWrittenDay = day;
         break;
       }
@@ -51,58 +51,57 @@ class FreezeService {
 
     if (gapDays <= 0) return false;
 
-    final available = await getFreezesAvailable();
-
-    if (gapDays > available) {
-      final currentMax = prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
-      if (currentMax == maxFreezes) return false;
-      await prefs.setInt(_keyFreezesAvailable, maxFreezes);
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
-      return true;
-    }
+    if (gapDays > available) return false;
 
     int applied = 0;
-
     for (int i = 1; i <= gapDays; i++) {
       final day = lastWrittenDay.add(Duration(days: i));
-      final dayKey = dateKey(day);
+      final key = dateKey(day);
+      if (usedDates.contains(key)) continue;
 
-      if (dayKey == dateKey(today)) break;
-
-      final usedDates = await getFreezeUsedDates();
-      if (usedDates.contains(dayKey)) continue;
-
-      final currentAvailable = await getFreezesAvailable();
-      if (currentAvailable <= 0) break;
-
-      final newUsedDates = {...usedDates, dayKey};
-      await prefs.setStringList(_keyFreezeUsedDates, newUsedDates.toList());
-      await prefs.setInt(_keyFreezesAvailable, currentAvailable - 1);
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      await db.insert('freeze_days', {
+        'date': key,
+      }, conflictAlgorithm: ConflictAlgorithm.ignore);
+      available--;
       applied++;
     }
 
-    return applied > 0;
+    if (applied > 0) {
+      _prefs.setInt(_keyFreezesAvailable, available);
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      return true;
+    }
+
+    return false;
   }
 
   Future<void> recordWritingDay() async {
-    final prefs = await SharedPreferences.getInstance();
-    final available = prefs.getInt(_keyFreezesAvailable) ?? maxFreezes;
+    final available = getFreezesAvailable();
 
-    if (available >= maxFreezes) return;
+    if (available >= maxFreezes) {
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      return;
+    }
 
-    final current = prefs.getInt(_keyDaysWrittenAfterFreeze) ?? 0;
+    final current = getDaysWrittenAfterFreeze();
     final next = current + 1;
 
     if (next >= daysToRestore) {
-      await prefs.setInt(_keyFreezesAvailable, available + 1);
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
+      _prefs.setInt(_keyFreezesAvailable, available + 1);
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
     } else {
-      await prefs.setInt(_keyDaysWrittenAfterFreeze, next);
+      _prefs.setInt(_keyDaysWrittenAfterFreeze, next);
     }
+  }
+
+  Future<void> restoreFreezesIfNeeded() async {
+    final available = getFreezesAvailable();
+    if (available >= maxFreezes) return;
+    _prefs.setInt(_keyFreezesAvailable, maxFreezes);
+    _prefs.setInt(_keyDaysWrittenAfterFreeze, 0);
   }
 }
 
 final freezeServiceProvider = Provider<FreezeService>((ref) {
-  return FreezeService.instance;
+  return FreezeService(ref.read(sharedPrefsProvider));
 });

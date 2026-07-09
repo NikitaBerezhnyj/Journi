@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'skeleton_widget.dart';
+import '../core/skeleton_widget.dart';
 
 class CalendarViewSkeleton extends StatelessWidget {
   const CalendarViewSkeleton({super.key});

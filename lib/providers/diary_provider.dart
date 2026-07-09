@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journi/providers/freeze_provider.dart';
+import 'package:journi/providers/shared_prefs_provider.dart';
 import 'package:journi/providers/time_service_provider.dart';
 import 'package:journi/services/diary_service.dart';
 import 'package:journi/utils/streak_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/diary_entry.dart';
 import '../services/notification_service.dart';
 import '../types/streak_day.dart';
@@ -101,14 +101,15 @@ class DiaryEntryNotifier extends FamilyAsyncNotifier<DiaryEntry?, DateTime> {
     state = AsyncData(saved);
 
     if (isNew) {
-      await ref.read(freezeProvider.notifier).recordWritingDay();
+      ref.read(freezeProvider.notifier).recordWritingDay();
       final freezeState = ref.read(freezeProvider).valueOrNull;
       final freezesAvailable = freezeState?.freezesAvailable ?? 2;
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('last_entry_saved_at', now.millisecondsSinceEpoch);
-      await NotificationService.rescheduleAfterEntry(
+      final prefs = ref.read(sharedPrefsProvider);
+      prefs.setInt('last_entry_saved_at', now.millisecondsSinceEpoch);
+      NotificationService.rescheduleAfterEntry(
         savedAt: now,
         freezesAvailable: freezesAvailable,
+        prefs: prefs
       );
     }
   }

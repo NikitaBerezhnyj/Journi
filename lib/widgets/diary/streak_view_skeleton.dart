@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'skeleton_widget.dart';
+import '../core/skeleton_widget.dart';
 
 class StreakViewSkeleton extends StatelessWidget {
   const StreakViewSkeleton({super.key});
