@@ -58,7 +58,7 @@ class FreezeIntroScreen extends StatelessWidget {
                 t.freezeIntroDescription,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: cs.onSurface.withOpacity(0.65),
+                  color: cs.onSurface.withValues(alpha: 0.65),
                   height: 1.5,
                 ),
               ),
@@ -144,7 +144,7 @@ class _RuleItem extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.12),
+            color: color.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, size: 20, color: color),
@@ -156,7 +156,7 @@ class _RuleItem extends StatelessWidget {
             child: Text(
               text,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: cs.onSurface.withOpacity(0.8),
+                color: cs.onSurface.withValues(alpha: 0.8),
                 height: 1.4,
               ),
             ),

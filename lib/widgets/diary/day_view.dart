@@ -86,7 +86,7 @@ class DayView extends StatelessWidget {
               border: _isToday && !hasDiary
                   ? Border.all(color: cs.primary, width: 1.5)
                   : Border.all(
-                      color: cs.outlineVariant.withOpacity(0.5),
+                      color: cs.outlineVariant.withValues(alpha: 0.5),
                       width: 0.5,
                     ),
             ),
@@ -99,7 +99,7 @@ class DayView extends StatelessWidget {
               fontSize: 10,
               color: hasDiary
                   ? cs.onPrimaryContainer
-                  : cs.onSurface.withOpacity(0.4),
+                  : cs.onSurface.withValues(alpha: 0.4),
               fontWeight: _isToday ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
@@ -122,14 +122,14 @@ class DayView extends StatelessWidget {
       bgColor = cs.primary;
       textColor = cs.onPrimary;
     } else if (hasDiary) {
-      bgColor = cs.primaryContainer.withOpacity(0.6);
+      bgColor = cs.primaryContainer.withValues(alpha: 0.6);
       textColor = cs.onPrimaryContainer;
     } else if (isFrozen) {
       bgColor = cs.primaryContainer;
       textColor = cs.onPrimaryContainer;
     } else {
       bgColor = Colors.transparent;
-      textColor = cs.onSurface.withOpacity(0.4);
+      textColor = cs.onSurface.withValues(alpha: 0.4);
     }
 
     return GestureDetector(
@@ -149,7 +149,7 @@ class DayView extends StatelessWidget {
                 ? Icon(
                     Icons.ac_unit_rounded,
                     size: 24,
-                    color: cs.primary.withOpacity(0.7),
+                    color: cs.primary.withValues(alpha: 0.7),
                   )
                 : Text(
                     '${date.day}',
@@ -166,7 +166,7 @@ class DayView extends StatelessWidget {
               width: 4,
               height: 4,
               decoration: BoxDecoration(
-                color: cs.primary.withOpacity(0.7),
+                color: cs.primary.withValues(alpha: 0.7),
                 shape: BoxShape.circle,
               ),
             )

@@ -16,7 +16,7 @@ class MonthView extends StatelessWidget {
     required this.month,
     required this.today,
     required this.daysMap,
-    required this.onDayTap
+    required this.onDayTap,
   });
 
   List<DateTime?> _buildCalendarDays(DateTime month) {
@@ -67,7 +67,7 @@ class MonthView extends StatelessWidget {
                     label,
                     style: TextStyle(
                       fontSize: 11,
-                      color: cs.onSurface.withOpacity(0.35),
+                      color: cs.onSurface.withValues(alpha: 0.35),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -113,7 +113,7 @@ class MonthView extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8),
-          Divider(color: cs.outlineVariant.withOpacity(0.4), height: 1),
+          Divider(color: cs.outlineVariant.withValues(alpha: 0.4), height: 1),
         ],
       ),
     );

@@ -29,8 +29,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _selectedLanguage = supportedLocales.entries
         .firstWhere(
           (e) => e.value.languageCode == currentLocale.languageCode,
-      orElse: () => supportedLocales.entries.first,
-    )
+          orElse: () => supportedLocales.entries.first,
+        )
         .key;
   }
 
@@ -42,10 +42,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final selectedTheme = themeAsync.valueOrNull ?? ThemeMode.system;
 
     return Scaffold(
-      appBar: AppHeader(
-        title: t.settingsTitle,
-        showBackButton: true,
-      ),
+      appBar: AppHeader(title: t.settingsTitle, showBackButton: true),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -57,11 +54,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: _selectedLanguage,
+              initialValue: _selectedLanguage,
               items: supportedLocales.keys
                   .map(
                     (lang) => DropdownMenuItem(value: lang, child: Text(lang)),
-              )
+                  )
                   .toList(),
               onChanged: (val) async {
                 if (val == null) return;
@@ -79,7 +76,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<ThemeMode>(
-              value: selectedTheme,
+              initialValue: selectedTheme,
               items: [
                 DropdownMenuItem(
                   value: ThemeMode.system,
