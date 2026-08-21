@@ -43,8 +43,8 @@ jobs:
         run: |
           mkdir -p dist
           VERSION=${{ steps.get_version.outputs.version }}
-          cp build/app/outputs/flutter-apk/app-release.apk dist/Journi-${VERSION}.apk
-          cp build/app/outputs/bundle/release/app-release.aab dist/Journi-${VERSION}.aab || true
+          cp build/app/outputs/flutter-apk/app-release.apk dist/Journi.apk
+          cp build/app/outputs/bundle/release/app-release.aab dist/Journi.aab || true
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
