@@ -51,7 +51,7 @@ class FreezeInfoBottomSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: cs.onSurface.withOpacity(0.2),
+                color: cs.onSurface.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -91,7 +91,7 @@ class FreezeInfoBottomSheet extends StatelessWidget {
           ],
 
           const SizedBox(height: 8),
-          Divider(color: cs.outlineVariant.withOpacity(0.4)),
+          Divider(color: cs.outlineVariant.withValues(alpha: 0.4)),
           const SizedBox(height: 12),
 
           _InfoItem(
@@ -141,7 +141,7 @@ class _StatusRow extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: cs.onSurface.withOpacity(0.6),
+            color: cs.onSurface.withValues(alpha: 0.6),
           ),
         ),
         Text(
@@ -179,7 +179,7 @@ class _InfoItem extends StatelessWidget {
           child: Text(
             text,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: cs.onSurface.withOpacity(0.8),
+              color: cs.onSurface.withValues(alpha: 0.8),
             ),
           ),
         ),

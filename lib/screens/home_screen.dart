@@ -16,7 +16,7 @@ import 'diary_entry_screen.dart';
 import 'freeze_intro_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -127,10 +127,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: !bothReady
                   ? const CalendarViewSkeleton()
                   : CalendarView(
-                days: calendarAsync.value!,
-                today: today,
-                onDayTap: _openDiary,
-              ),
+                      days: calendarAsync.value!,
+                      today: today,
+                      onDayTap: _openDiary,
+                    ),
             ),
           ],
         ),
@@ -138,9 +138,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await _openDiary(DateTime.now());
-          if (!mounted) return;
+          if (!context.mounted) return;
+
           final shouldShow = await FreezeIntroScreen.shouldShow();
-          if (!mounted) return;
+          if (!context.mounted) return;
+
           if (shouldShow) {
             await Navigator.push(
               context,

@@ -134,7 +134,7 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
                       decoration: InputDecoration(
                         hintText: DiaryPromptGenerator.getRandom(t),
                         hintStyle: TextStyle(
-                          color: cs.onSurface.withOpacity(0.3),
+                          color: cs.onSurface.withValues(alpha: 0.3),
                         ),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -177,14 +177,14 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
                 height: 14,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: cs.onSurface.withOpacity(0.4),
+                  color: cs.onSurface.withValues(alpha: 0.4),
                 ),
               ),
               const SizedBox(width: 6),
               Text(
                 t.saving,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: cs.onSurface.withOpacity(0.4),
+                  color: cs.onSurface.withValues(alpha: 0.4),
                 ),
               ),
             ],
@@ -197,13 +197,13 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
               Icon(
                 Icons.check_circle_outline_rounded,
                 size: 16,
-                color: cs.primary.withOpacity(0.7),
+                color: cs.primary.withValues(alpha: 0.7),
               ),
               const SizedBox(width: 6),
               Text(
                 t.saved,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: cs.primary.withOpacity(0.7),
+                  color: cs.primary.withValues(alpha: 0.7),
                 ),
               ),
             ],

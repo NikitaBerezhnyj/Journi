@@ -10,7 +10,13 @@ class StreakView extends StatelessWidget {
   final VoidCallback onFreezeTap;
   final Function(DateTime) onDayTap;
 
-  const StreakView({super.key, required this.streakState, required this.today, required this.onFreezeTap, required this.onDayTap});
+  const StreakView({
+    super.key,
+    required this.streakState,
+    required this.today,
+    required this.onFreezeTap,
+    required this.onDayTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +55,15 @@ class StreakView extends StatelessWidget {
                   Text(
                     t.days_in_row(streakState.streakCount),
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: cs.onPrimaryContainer.withOpacity(0.65),
+                      color: cs.onPrimaryContainer.withValues(alpha: 0.65),
                     ),
                   ),
                   const Spacer(),
 
-                  _FreezeIndicator(streakState: streakState, onTap: onFreezeTap,),
+                  _FreezeIndicator(
+                    streakState: streakState,
+                    onTap: onFreezeTap,
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -113,7 +122,7 @@ class _FreezeIndicator extends StatelessWidget {
               size: 20,
               color: isActive
                   ? cs.primary
-                  : cs.onPrimaryContainer.withOpacity(0.25),
+                  : cs.onPrimaryContainer.withValues(alpha: 0.25),
             ),
           );
         }),

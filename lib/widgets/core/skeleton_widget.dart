@@ -28,9 +28,10 @@ class _SkeletonBoxState extends State<SkeletonBox>
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     )..repeat(reverse: true);
-    _animation = Tween(begin: 0.4, end: 0.9).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween(
+      begin: 0.4,
+      end: 0.9,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -44,11 +45,11 @@ class _SkeletonBoxState extends State<SkeletonBox>
     final color = Theme.of(context).colorScheme.onSurface;
     return AnimatedBuilder(
       animation: _animation,
-      builder: (_, __) => Container(
+      builder: (_, _) => Container(
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-          color: color.withOpacity(_animation.value * 0.12),
+          color: color.withValues(alpha: _animation.value * 0.12),
           borderRadius: BorderRadius.circular(widget.radius),
         ),
       ),
