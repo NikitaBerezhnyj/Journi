@@ -4,23 +4,28 @@
   <img src="./assets/icon.png" alt="App logo" width="200"/>
 </p>
 
-Journi is a simple app for blood donors that allows you to:
+Journi is a simple mobile journaling app designed to help you build a consistent writing habit.
 
-- Record donations of blood, plasma, and platelets.
-- Track a timer until the next donation.
-- View statistics of previous donations.
+The app combines a personal diary with **streak-based motivation**: write every day, keep your streak alive, and use freezes when you need to take a break without losing your progress.
 
-The app is currently small, but it may grow and gain new features in the future.
+## Features
+
+- **Daily journal** — write and save your thoughts, experiences, and memories.
+- **Streaks** — track how many consecutive days you've kept your journaling habit.
+- **Streak freezes** — protect your streak when you miss a day.
+- **Notifications** — receive reminders to write and keep your streak going.
+- **Progress tracking** — see your journaling activity and current streak.
+
+Journi is currently a small project, but it may grow with new features in the future.
 
 ## Technologies
 
 - [Flutter](https://flutter.dev/) — for cross-platform mobile development.
 - [Dart](https://dart.dev/) — programming language.
-- [Node.js](https://nodejs.org/) and [Husky](https://typicode.github.io/husky/) + [Commitlint](https://commitlint.js.org/) — for commit message validation.
 
 ## Running the App
 
-1. Install Flutter and Dart on your system:  
+1. Install Flutter and Dart on your system:
    [Flutter installation guide](https://docs.flutter.dev/get-started/install)
 
 2. Clone the repository:
@@ -34,7 +39,6 @@ cd Journi
 
 ```bash
 flutter pub get
-npm install
 ```
 
 4. Run on an emulator or physical device:
