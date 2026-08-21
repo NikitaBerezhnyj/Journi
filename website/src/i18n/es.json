@@ -1,0 +1,102 @@
+{
+  "code": "es",
+  "meta": {
+    "title": "Journi — un diario que te ayuda a escribir cada día",
+    "description": "Journi es una app de diario sencilla con motivación por rachas: escribe cada día, mantén tu racha y protege tu progreso con congelaciones."
+  },
+  "hero": {
+    "title": "Un diario que te ayuda a escribir cada día",
+    "subtitle": "Escribe todos los días, mantén tu racha activa y no pierdas tu progreso gracias a las congelaciones, incluso cuando la vida se interpone.",
+    "google_play": "Google Play",
+    "github_apk": "APK de GitHub",
+    "download_note": "La versión oficial en Google Play con actualizaciones automáticas. O la instalación directa del APK desde GitHub, sin necesidad de una cuenta de Google.",
+    "eyebrow": "Un diario con motivación por rachas"
+  },
+  "features": {
+    "title": "Funciones",
+    "items": [
+      {
+        "icon": "edit_note",
+        "title": "Diario diario",
+        "desc": "Escribe y guarda tus pensamientos, experiencias y recuerdos en un solo lugar."
+      },
+      {
+        "icon": "local_fire_department",
+        "title": "Rachas",
+        "desc": "Controla cuántos días seguidos has mantenido tu hábito de escritura."
+      },
+      {
+        "icon": "ac_unit",
+        "title": "Congelaciones de racha",
+        "desc": "Dos congelaciones protegen tu racha si te saltas un día. Una congelación se restaura tras 3 días seguidos sin fallar."
+      },
+      {
+        "icon": "notifications",
+        "title": "Notificaciones",
+        "desc": "Los recordatorios te ayudan a mantener el hábito."
+      }
+    ]
+  },
+  "footer": {
+    "privacy": "Política de privacidad",
+    "github": "GitHub",
+    "license": "Licencia",
+    "rights": "Todos los derechos reservados."
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "updated": "Última actualización: [21.08.2026]",
+    "intro": "Journi (\"la app\", \"nosotros\") respeta tu privacidad. Esta política explica qué datos procesa la app y cómo.",
+    "sections": [
+      {
+        "h": "Datos que procesamos",
+        "p": "Journi almacena todas tus entradas del diario, datos de rachas y de congelaciones <strong>localmente en tu dispositivo</strong>. No recopilamos, transmitimos ni tenemos acceso al contenido de tus entradas — no se utiliza ningún servidor ni cuenta para ello."
+      },
+      {
+        "h": "Notificaciones",
+        "p": "La app puede solicitar permiso para enviar notificaciones push locales como recordatorios de escritura. Este permiso se usa únicamente para recordatorios y no está vinculado a ninguna recopilación de datos."
+      },
+      {
+        "h": "Datos de terceros",
+        "p": "Journi no utiliza servicios de análisis, publicidad ni rastreo de terceros."
+      },
+      {
+        "h": "Eliminación de datos",
+        "p": "Dado que todos los datos se almacenan localmente, desinstalar la app elimina permanentemente todas tus entradas y estadísticas. No conservamos copias de seguridad centralizadas de tus datos."
+      },
+      {
+        "h": "Menores",
+        "p": "Journi no está destinado a personas menores de 13 años y no recopila datos de menores de forma consciente."
+      },
+      {
+        "h": "Cambios en esta política",
+        "p": "Podemos actualizar esta política ocasionalmente. La fecha de la última actualización siempre aparece en la parte superior de esta página."
+      }
+    ],
+    "contact_h": "Contacto",
+    "contact_p": "Preguntas sobre esta política pueden enviarse a:",
+    "back_home": "← Volver al inicio"
+  },
+  "how": {
+    "title": "Cómo funciona",
+    "subtitle": "Tres pasos simples para que el hábito se quede",
+    "steps": [
+      {
+        "title": "Escribe cada día",
+        "desc": "Abre la app y deja unas líneas — pensamientos, eventos, estado de ánimo. Toma un minuto."
+      },
+      {
+        "title": "Mantén tu racha",
+        "desc": "Cada día sin fallar extiende tu racha y muestra hasta dónde has llegado."
+      },
+      {
+        "title": "Protege tu progreso",
+        "desc": "¿Te saltaste un día? Una congelación salva tu racha automáticamente — sin estrés ni culpa."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Empieza tu racha hoy",
+    "subtitle": "La primera entrada toma un minuto. Después, es solo hábito."
+  }
+}

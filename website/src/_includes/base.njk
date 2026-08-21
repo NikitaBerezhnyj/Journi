@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ t.code }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ t.meta.title }}</title>
+<meta name="description" content="{{ t.meta.description }}">
+<link rel="alternate" hreflang="uk" href="https://journi.app/uk/{{ hrefSuffix }}">
+<link rel="alternate" hreflang="en" href="https://journi.app/en/{{ hrefSuffix }}">
+<link rel="alternate" hreflang="es" href="https://journi.app/es/{{ hrefSuffix }}">
+<link rel="alternate" hreflang="x-default" href="https://journi.app/en/{{ hrefSuffix }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="icon" />
+<script src="../index.js" defer></script>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/{{ t.code }}/">
+      {% icon "auto_stories", "icon" %}
+      Journi
+    </a>
+    <div class="header-controls">
+      <div class="lang-switch">
+        {% for l in locales %}
+        <a href="../{{ l.code }}/{{ hrefSuffix }}" data-lang="{{ l.code }}" class="{{ 'active' if l.code == t.code else '' }}">{{ l.label }}</a>
+        {% endfor %}
+      </div>
+      <button id="theme-toggle" class="icon-btn" aria-label="{{ t.nav.theme_toggle }}">
+        {% icon "light_mode", "icon icon-sun" %}
+        {% icon "dark_mode", "icon icon-moon" %}
+      </button>
+    </div>
+  </div>
+</header>
+
+{{ content | safe }}
+
+</body>
+</html>
