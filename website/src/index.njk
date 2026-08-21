@@ -1,0 +1,94 @@
+---
+pagination:
+  data: i18n
+  size: 1
+  alias: t
+permalink: "{{ t.code }}/index.html"
+layout: base.njk
+hrefSuffix: ""
+navPrefix: ""
+---
+<section class="hero">
+  <div class="hero-blob b1"></div>
+  <div class="hero-blob b2"></div>
+  <div class="hero-blob b3"></div>
+
+  <div class="hero-content">
+    <h1>{{ t.hero.title }}</h1>
+    <p class="lead">{{ t.hero.subtitle }}</p>
+    <div class="hero-buttons">
+      <a href="{{ links.googlePlay }}" target="_blank" class="btn btn-primary">{% icon "storefront", "icon" %}{{ t.hero.google_play }}</a>
+      <a href="{{ links.androidApk }}" target="_blank" class="btn btn-secondary">{% icon "download", "icon" %}{{ t.hero.github_apk }}</a>
+    </div>
+    <p class="hero-note">{{ t.hero.download_note }}</p>
+  </div>
+
+  <div class="hero-floaters">
+    <div class="floater">{% icon "local_fire_department" %}</div>
+    <div class="floater">{% icon "edit_note" %}</div>
+    <div class="floater">{% icon "ac_unit" %}</div>
+  </div>
+
+  <div class="scroll-hint"><span class="line"></span>Scroll</div>
+</section>
+
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">{{ t.hero.eyebrow }}</span>
+      <h2>{{ t.how.title }}</h2>
+      <p>{{ t.how.subtitle }}</p>
+    </div>
+    <div class="steps">
+      {% for step in t.how.steps %}
+      <div class="step reveal reveal-delay-{{ loop.index0 }}">
+        <div class="step-num">{{ loop.index }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Journi</span>
+      <h2>{{ t.features.title }}</h2>
+    </div>
+
+    {% for item in t.features.items %}
+    <div class="feature-row reveal {{ 'reverse' if loop.index0 % 2 == 1 else '' }}">
+      <div class="feature-visual">
+        {% icon item.icon, "icon-big" %}
+      </div>
+      <div class="feature-text">
+        <span class="tag">{{ ("0" + (loop.index)|string) }}</span>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.desc }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="band">
+  <div class="cta-panel reveal">
+    <h2>{{ t.cta.title }}</h2>
+    <p>{{ t.cta.subtitle }}</p>
+    <div class="hero-buttons">
+      <a href="{{ links.googlePlay }}" target="_blank" class="btn btn-light">{% icon "storefront", "icon" %}{{ t.hero.google_play }}</a>
+      <a href="{{ links.androidApk }}" target="_blank" class="btn btn-ghost-light">{% icon "download", "icon" %}{{ t.hero.github_apk }}</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Journi. {{ t.footer.rights }}
+  <div class="footer-links">
+    <a href="privacy.html">{{ t.footer.privacy }}</a>
+    <a href="https://github.com/NikitaBerezhnyj/Journi">{{ t.footer.github }}</a>
+    <a href="https://github.com/NikitaBerezhnyj/Journi/blob/main/LICENSE">{{ t.footer.license }}</a>
+  </div>
+</footer>

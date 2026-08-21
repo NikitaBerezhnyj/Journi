@@ -1,0 +1,31 @@
+---
+pagination:
+  data: i18n
+  size: 1
+  alias: t
+permalink: "{{ t.code }}/privacy.html"
+layout: base.njk
+hrefSuffix: "privacy.html"
+navPrefix: "index.html"
+---
+<main class="legal">
+  <h1>{{ t.privacy.title }}</h1>
+  <p class="updated">{{ t.privacy.updated }}</p>
+  <p>{{ t.privacy.intro }}</p>
+
+  {% for section in t.privacy.sections %}
+  <h2>{{ section.h }}</h2>
+  <p>{{ section.p | safe }}</p>
+  {% endfor %}
+
+  <h2>{{ t.privacy.contact_h }}</h2>
+  <p>{{ t.privacy.contact_p }} <a href="mailto:nikita.berezhnyj@gmail.com">nikita.berezhnyj@gmail.com</a></p>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">{{ t.privacy.back_home }}</a>
+    <a href="https://github.com/NikitaBerezhnyj/Journi">{{ t.footer.github }}</a>
+  </div>
+  &copy; 2026 Journi. {{ t.footer.rights }}
+</footer>

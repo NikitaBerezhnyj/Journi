@@ -1,0 +1,102 @@
+{
+  "code": "en",
+  "meta": {
+    "title": "Journi — a journal that keeps you writing",
+    "description": "Journi is a simple journaling app with streak-based motivation: write daily, keep your streak alive, and protect your progress with freezes."
+  },
+  "hero": {
+    "title": "A journal that keeps you writing",
+    "subtitle": "Write every day, keep your streak alive, and never lose your progress thanks to freezes — even when life gets in the way.",
+    "google_play": "Google Play",
+    "github_apk": "APK from GitHub",
+    "download_note": "Official version on Google Play with auto-updates. Or direct APK installation from GitHub — without a Google account.",
+    "eyebrow": "A journal with streak motivation"
+  },
+  "features": {
+    "title": "Features",
+    "items": [
+      {
+        "icon": "edit_note",
+        "title": "Daily journal",
+        "desc": "Write and save your thoughts, experiences, and memories in one place."
+      },
+      {
+        "icon": "local_fire_department",
+        "title": "Streaks",
+        "desc": "Track how many consecutive days you've kept your journaling habit."
+      },
+      {
+        "icon": "ac_unit",
+        "title": "Streak freezes",
+        "desc": "Two freezes protect your streak when you miss a day. One freeze is restored after 3 consecutive days without a miss."
+      },
+      {
+        "icon": "notifications",
+        "title": "Notifications",
+        "desc": "Reminders help you keep the habit going."
+      }
+    ]
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "github": "GitHub",
+    "license": "License",
+    "rights": "All rights reserved."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: [21.08.2026]",
+    "intro": "Journi (\"the app\", \"we\") respects your privacy. This policy explains what data the app processes and how.",
+    "sections": [
+      {
+        "h": "Data we process",
+        "p": "Journi stores all your journal entries, streak data, and freeze data <strong>locally on your device</strong>. We do not collect, transmit, or have access to the content of your entries — no server or account is used for this."
+      },
+      {
+        "h": "Notifications",
+        "p": "The app may request permission to send local push notifications as journaling reminders. This permission is used solely for reminders and is not linked to any data collection."
+      },
+      {
+        "h": "Third-party data",
+        "p": "Journi does not use third-party analytics, advertising, or tracking services."
+      },
+      {
+        "h": "Data deletion",
+        "p": "Since all data is stored locally, uninstalling the app permanently removes all your entries and statistics. We do not keep centralized backups of your data."
+      },
+      {
+        "h": "Children",
+        "p": "Journi is not intended for use by anyone under 13 and does not knowingly collect data from children."
+      },
+      {
+        "h": "Changes to this policy",
+        "p": "We may update this policy from time to time. The last update date is always shown at the top of this page."
+      }
+    ],
+    "contact_h": "Contact",
+    "contact_p": "Questions about this policy can be sent to:",
+    "back_home": "← Back home"
+  },
+  "how": {
+    "title": "How it works",
+    "subtitle": "Three simple steps to make the habit stick",
+    "steps": [
+      {
+        "title": "Write daily",
+        "desc": "Open the app and leave a few lines — thoughts, events, mood. Takes a minute."
+      },
+      {
+        "title": "Keep your streak",
+        "desc": "Every day without a miss extends your streak and shows how far you've come."
+      },
+      {
+        "title": "Protect your progress",
+        "desc": "Missed a day? A freeze automatically saves your streak — no stress, no guilt."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Start your streak today",
+    "subtitle": "The first entry takes a minute. After that, it's just habit."
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journi</title>
+  <meta name="robots" content="noindex">
+  <link rel="alternate" hreflang="uk" href="https://nikitaberezhnyj.github.io/Journi/uk/">
+  <link rel="alternate" hreflang="en" href="https://nikitaberezhnyj.github.io/Journi/en/">
+  <link rel="alternate" hreflang="es" href="https://nikitaberezhnyj.github.io/Journi/es/">
+  <link rel="alternate" hreflang="x-default" href="https://nikitaberezhnyj.github.io/Journi/en/">
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=/en/index.html">
+  </noscript>
+</head>
+
+<body>
+  <script>
+    var supported = ["uk", "en", "es"];
+    var saved = localStorage.getItem("journi-lang");
+    var browserLang = (navigator.language || navigator.userLanguage || "en").slice(0, 2);
+    var target = supported.indexOf(saved) !== -1
+      ? saved
+      : (supported.indexOf(browserLang) !== -1 ? browserLang : "en");
+    window.location.replace("/" + target + "/index.html");
+  </script>
+  <noscript>
+    <p>Journi — <a href="/en/index.html">continue to site</a></p>
+  </noscript>
+</body>
+
+</html>

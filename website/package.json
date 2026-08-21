@@ -1,0 +1,16 @@
+{
+  "name": "journi-site",
+  "version": "1.0.0",
+  "description": "Landing page and privacy policy for the Journi app (uk/en/es)",
+  "private": true,
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve"
+  },
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@material-design-icons/svg": "^0.14.15",
+    "@material/material-color-utilities": "^0.2.7"
+  }
+}
