@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 import '../constants/notification_strings.dart';
+import 'analytics_service.dart';
 
 class NotificationService {
   static final _plugin = FlutterLocalNotificationsPlugin();
@@ -16,6 +17,11 @@ class NotificationService {
 
   static const int _defaultEveningHour = 21;
   static const int _defaultEveningMinute = 0;
+
+  static const _payload24h = 'reminder_24h';
+  static const _payloadEvening = 'reminder_evening';
+  static const _payloadFreezeWarning = 'reminder_freeze_warning';
+  static const _payloadStreakLost = 'reminder_streak_lost';
 
   static Future<void> init() async {
     tz_data.initializeTimeZones();
@@ -32,12 +38,32 @@ class NotificationService {
     const ios = DarwinInitializationSettings();
     await _plugin.initialize(
       const InitializationSettings(android: android, iOS: ios),
+      onDidReceiveNotificationResponse: _onNotificationTapped,
     );
-    await _plugin
+
+    final granted = await _plugin
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >()
         ?.requestNotificationsPermission();
+    if (granted != null) {
+      AnalyticsService.logNotificationPermission(granted: granted);
+    }
+
+    final launchDetails = await _plugin.getNotificationAppLaunchDetails();
+    if (launchDetails?.didNotificationLaunchApp ?? false) {
+      final payload = launchDetails?.notificationResponse?.payload;
+      if (payload != null) {
+        AnalyticsService.logNotificationOpened(type: payload);
+      }
+    }
+  }
+
+  static void _onNotificationTapped(NotificationResponse response) {
+    final payload = response.payload;
+    if (payload != null) {
+      AnalyticsService.logNotificationOpened(type: payload);
+    }
   }
 
   static Future<void> rescheduleAfterEntry({
@@ -46,6 +72,7 @@ class NotificationService {
     required SharedPreferences prefs,
   }) async {
     final enabled = prefs.getBool('reminders_enabled') ?? true;
+
     if (!enabled) return;
 
     final locale = prefs.getString('locale') ?? 'uk';
@@ -77,13 +104,13 @@ class NotificationService {
     required int freezesAvailable,
   }) async {
     await _plugin.cancelAll();
-
     await _scheduleIfFuture(
       id: _id24h,
       title: NotificationStrings.get('reminder24hTitle', locale),
       body: NotificationStrings.get('reminder24hBody', locale),
       scheduledDate: savedAt.add(const Duration(hours: 24)),
       locale: locale,
+      payload: _payload24h,
     );
 
     await _scheduleIfFuture(
@@ -96,6 +123,7 @@ class NotificationService {
         _defaultEveningMinute,
       ),
       locale: locale,
+      payload: _payloadEvening,
     );
 
     if (freezesAvailable > 0) {
@@ -110,6 +138,7 @@ class NotificationService {
           _defaultEveningMinute,
         ),
         locale: locale,
+        payload: _payloadFreezeWarning,
       );
     }
 
@@ -119,6 +148,7 @@ class NotificationService {
       body: NotificationStrings.get('reminderStreakLostBody', locale),
       scheduledDate: savedAt.add(Duration(days: freezesAvailable + 2)),
       locale: locale,
+      payload: _payloadStreakLost,
     );
   }
 
@@ -128,6 +158,7 @@ class NotificationService {
     required String body,
     required DateTime scheduledDate,
     required String locale,
+    required String payload,
   }) async {
     final now = DateTime.now();
     if (scheduledDate.isBefore(now)) return;
@@ -151,7 +182,8 @@ class NotificationService {
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: payload,
     );
   }
 
