@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/diary_provider.dart';
+import '../services/analytics_service.dart';
 import '../utils/date_utils.dart';
 import '../utils/diary_prompt_generator.dart';
 import '../widgets/core/app_header.dart';
@@ -26,6 +27,11 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
   bool _initialized = false;
   late final FocusNode _focusNode;
 
+  String _initialText = '';
+  bool _startedLogged = false;
+
+  bool get _isToday => DateUtils.isSameDay(widget.date, DateTime.now());
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +49,11 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
   }
 
   void _onTextChanged(String text) {
+    if (!_startedLogged && _initialText.isEmpty && text.trim().isNotEmpty) {
+      _startedLogged = true;
+      AnalyticsService.logEntryStarted(isToday: _isToday);
+    }
+
     _debounce?.cancel();
     _savedTimer?.cancel();
 
@@ -81,6 +92,33 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     });
   }
 
+  Future<void> _flushAndLogOnExit() async {
+    _debounce?.cancel();
+    _savedTimer?.cancel();
+    final finalText = _controller.text;
+    await ref
+        .read(diaryEntryNotifierProvider(widget.date).notifier)
+        .save(finalText);
+
+    final trimmedFinal = finalText.trim();
+    final hadPreviousText = _initialText.trim().isNotEmpty;
+
+    if (trimmedFinal.isEmpty) {
+      if (hadPreviousText || _startedLogged) {
+        AnalyticsService.logEntryAbandoned(
+          isToday: _isToday,
+          hadPreviousText: hadPreviousText,
+        );
+      }
+    } else if (trimmedFinal != _initialText.trim()) {
+      AnalyticsService.logEntrySaved(
+        finalLength: finalText.length,
+        isToday: _isToday,
+        isEdit: hadPreviousText,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
@@ -91,6 +129,7 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
       final entry = next.valueOrNull;
       if (entry != null && !_initialized) {
         _initialized = true;
+        _initialText = entry.text;
         _controller.text = entry.text;
         _controller.selection = TextSelection.collapsed(
           offset: entry.text.length,
@@ -103,56 +142,69 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     final isLoading = entryAsync.isLoading;
     final hasError = entryAsync.hasError;
 
-    return Scaffold(
-      appBar: AppHeader(
-        showBackButton: true,
-        title: formatFullDate(widget.date, t),
-        action: _buildSaveStatus(cs, theme, t),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 12),
-              Expanded(
-                child: Stack(
-                  children: [
-                    TextField(
-                      focusNode: _focusNode,
-                      controller: _controller,
-                      onChanged: _onTextChanged,
-                      maxLines: null,
-                      expands: true,
-                      textCapitalization: TextCapitalization.sentences,
-                      textAlignVertical: TextAlignVertical.top,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        height: 1.6,
-                        color: cs.onSurface,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: DiaryPromptGenerator.getRandom(t),
-                        hintStyle: TextStyle(
-                          color: cs.onSurface.withValues(alpha: 0.3),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        await _flushAndLogOnExit();
+        if (context.mounted) Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        appBar: AppHeader(
+          showBackButton: true,
+          title: formatFullDate(widget.date, t),
+          action: _buildSaveStatus(cs, theme, t),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 12),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      TextField(
+                        focusNode: _focusNode,
+                        controller: _controller,
+                        onChanged: _onTextChanged,
+                        maxLines: null,
+                        expands: true,
+                        textCapitalization: TextCapitalization.sentences,
+                        textAlignVertical: TextAlignVertical.top,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          height: 1.6,
+                          color: cs.onSurface,
                         ),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                      ),
-                    ),
-                    if (isLoading)
-                      const Center(child: CircularProgressIndicator()),
-                    if (hasError)
-                      Center(
-                        child: Text(
-                          '${entryAsync.error}',
-                          style: TextStyle(color: cs.error),
+                        decoration: InputDecoration(
+                          hintText: DiaryPromptGenerator.getRandom(t),
+                          hintStyle: TextStyle(
+                            color: cs.onSurface.withValues(alpha: 0.3),
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.fromLTRB(
+                            0,
+                            0,
+                            0,
+                            20,
+                          ),
                         ),
                       ),
-                  ],
+                      if (isLoading)
+                        const Center(child: CircularProgressIndicator()),
+                      if (hasError)
+                        Center(
+                          child: Text(
+                            '${entryAsync.error}',
+                            style: TextStyle(color: cs.error),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

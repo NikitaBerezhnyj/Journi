@@ -28,6 +28,22 @@ jobs:
         with:
           flutter-version: "3.38.5"
 
+      - name: Setup signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/upload-keystore.jks
+
+          cat > android/key.properties <<EOF
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=upload-keystore.jks
+          EOF
+
       - name: Get dependencies
         run: flutter pub get
 
@@ -48,7 +64,7 @@ jobs:
           mkdir -p dist
           VERSION=${{ steps.get_version.outputs.version }}
           cp build/app/outputs/flutter-apk/app-release.apk dist/Journi.apk
-          cp build/app/outputs/bundle/release/app-release.aab dist/Journi.aab || true
+          cp build/app/outputs/bundle/release/app-release.aab dist/Journi.aab
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

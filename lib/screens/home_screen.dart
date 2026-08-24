@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journi/screens/settings_screen.dart';
+import 'package:journi/services/analytics_service.dart';
 import 'package:journi/widgets/core/app_header.dart';
 import 'package:journi/widgets/diary/streak_view.dart';
 import '../providers/diary_provider.dart';
@@ -24,6 +25,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   ProviderSubscription? _streakSubscription;
+  ProviderSubscription? _streakAnalyticsSubscription;
 
   @override
   void initState() {
@@ -52,12 +54,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
         ref.invalidate(freezeProvider);
       }, fireImmediately: true);
+
+      _streakAnalyticsSubscription = ref.listenManual(streakStateProvider, (
+        previous,
+        next,
+      ) {
+        final prevCount = previous?.valueOrNull?.streakCount;
+        final nextCount = next.valueOrNull?.streakCount;
+        if (prevCount == null || nextCount == null) return;
+        if (prevCount == nextCount) return;
+
+        if (nextCount == 0 && prevCount > 0) {
+          AnalyticsService.logStreakBroken(streakLengthBeforeBreak: prevCount);
+          return;
+        }
+        final milestone = AnalyticsService.milestoneCrossed(
+          previous: prevCount,
+          next: nextCount,
+        );
+        if (milestone != null) {
+          AnalyticsService.logStreakMilestone(milestoneDays: milestone);
+        }
+      });
     });
   }
 
   @override
   void dispose() {
     _streakSubscription?.close();
+    _streakAnalyticsSubscription?.close();
     super.dispose();
   }
 
@@ -138,9 +163,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await _openDiary(DateTime.now());
+
           if (!context.mounted) return;
 
           final shouldShow = await FreezeIntroScreen.shouldShow();
+
           if (!context.mounted) return;
 
           if (shouldShow) {
