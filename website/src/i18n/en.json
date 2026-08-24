@@ -45,37 +45,49 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "updated": "Last updated: [21.08.2026]",
-    "intro": "Journi (\"the app\", \"we\") respects your privacy. This policy explains what data the app processes and how.",
+    "updated": "Last updated: [24.08.2026]",
+    "intro": "Journi (the \"app\", \"we\") respects your privacy. This policy explains what data the app processes, why it is used, and what data we do not collect.",
     "sections": [
       {
-        "h": "Data we process",
-        "p": "Journi stores all your journal entries, streak data, and freeze data <strong>locally on your device</strong>. We do not collect, transmit, or have access to the content of your entries — no server or account is used for this."
+        "h": "What Data We Process",
+        "p": "Journi stores your journal entries, streak data, freezes, and other basic progress information <strong>locally on your device</strong>. The content of your journal entries is not sent to our servers and is not used for analytics."
+      },
+      {
+        "h": "Usage Analytics",
+        "p": "Journi uses <strong>Google Firebase Analytics</strong> to collect statistics about the use of the app's main features. We may collect events related to creating and saving journal entries, abandoning an entry, using and restoring freezes, breaking and reaching streak milestones, and interacting with notifications. These events may contain technical or aggregated parameters needed to analyze user behavior and how the app's features are used. <strong>The content of journal entries, their text, or any other data derived from their content is not sent to Firebase Analytics.</strong> Firebase Analytics may also automatically collect certain technical information about app usage as part of the Firebase service."
+      },
+      {
+        "h": "Crash Reporting",
+        "p": "Journi uses <strong>Firebase Crashlytics</strong> to detect and analyze crashes and technical errors in the app. Crashlytics may process technical information related to a crash, including device model, operating system, app version, error timestamp, stack traces, and technical identifiers needed to analyze crashes. We do not use Crashlytics to collect or analyze the content of journal entries."
+      },
+      {
+        "h": "Third-Party Services",
+        "p": "Journi uses <strong>Google Firebase</strong> services for analytics and crash reporting: Firebase Analytics is used to analyze app usage, while Firebase Crashlytics is used to detect and analyze crashes. Firebase is a third-party service, so relevant technical information may be processed through Google's infrastructure in accordance with its privacy policies. Journi does not use advertising and does not share journal entry content with third-party services."
       },
       {
         "h": "Notifications",
-        "p": "The app may request permission to send local push notifications as journaling reminders. This permission is used solely for reminders and is not linked to any data collection."
+        "p": "The app may request permission to send local push notifications as reminders to write a journal entry. Notification permissions are used to provide these reminders. Interactions with notifications may also be recorded in Firebase Analytics as an aggregated event without sending the content of journal entries."
       },
       {
-        "h": "Third-party data",
-        "p": "Journi does not use third-party analytics, advertising, or tracking services."
+        "h": "What We Do Not Collect",
+        "p": "Journi does not send the text of journal entries, individual words or phrases from entries, journal content in any other form, or data derived from the content of entries to Firebase or other third-party services. We also do not require an account to use the main features of the app."
       },
       {
-        "h": "Data deletion",
-        "p": "Since all data is stored locally, uninstalling the app permanently removes all your entries and statistics. We do not keep centralized backups of your data."
+        "h": "Data Deletion",
+        "p": "Journi's main data — journal entries, streaks, freezes, and other locally stored statistics — are stored on your device. Uninstalling the app removes locally stored data unless it has been retained by the operating system or another system backup mechanism. Data that has already been sent to Firebase for analytics or crash reporting is retained and deleted according to the policies and retention periods of the respective services."
       },
       {
         "h": "Children",
-        "p": "Journi is not intended for use by anyone under 13 and does not knowingly collect data from children."
+        "p": "Journi is not intended for individuals under the age of 13 and does not knowingly collect data from children."
       },
       {
-        "h": "Changes to this policy",
-        "p": "We may update this policy from time to time. The last update date is always shown at the top of this page."
+        "h": "Changes to This Policy",
+        "p": "We may update this policy when the app's features, data processing practices, or third-party services change. The date of the latest update is always shown at the beginning of this page."
       }
     ],
     "contact_h": "Contact",
     "contact_p": "Questions about this policy can be sent to:",
-    "back_home": "← Back home"
+    "back_home": "← Back to Home"
   },
   "how": {
     "title": "How it works",
