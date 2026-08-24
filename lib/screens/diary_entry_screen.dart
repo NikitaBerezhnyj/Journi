@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/diary_provider.dart';
+import '../services/analytics_service.dart';
 import '../utils/date_utils.dart';
 import '../utils/diary_prompt_generator.dart';
 import '../widgets/core/app_header.dart';
@@ -103,7 +104,18 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
     final isLoading = entryAsync.isLoading;
     final hasError = entryAsync.hasError;
 
-    return Scaffold(
+    return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop) return;
+          _debounce?.cancel();
+          _savedTimer?.cancel();
+          await ref
+              .read(diaryEntryNotifierProvider(widget.date).notifier)
+              .save(_controller.text);
+          if (context.mounted) Navigator.of(context).pop();
+        },
+        child: Scaffold(
       appBar: AppHeader(
         showBackButton: true,
         title: formatFullDate(widget.date, t),
@@ -156,6 +168,7 @@ class _DiaryEntryScreenState extends ConsumerState<DiaryEntryScreen> {
           ),
         ),
       ),
+    )
     );
   }
 

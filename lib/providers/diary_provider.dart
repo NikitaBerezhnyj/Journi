@@ -87,6 +87,16 @@ class DiaryEntryNotifier extends FamilyAsyncNotifier<DiaryEntry?, DateTime> {
   Future<void> save(String text) async {
     final date = arg;
     final current = state.valueOrNull;
+    final trimmed = text.trim();
+
+    if (trimmed.isEmpty) {
+      if (current?.id != null) {
+        await ref.read(diaryServiceProvider).deleteEntry(current!.id!);
+      }
+      state = const AsyncData(null);
+      return;
+    }
+
     final isNew = current?.id == null;
     final now = DateTime.now();
 
@@ -109,7 +119,7 @@ class DiaryEntryNotifier extends FamilyAsyncNotifier<DiaryEntry?, DateTime> {
       NotificationService.rescheduleAfterEntry(
         savedAt: now,
         freezesAvailable: freezesAvailable,
-        prefs: prefs
+        prefs: prefs,
       );
     }
   }
