@@ -1,1 +1,22 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"journi-eb302","appId":"1:391465551122:android:dc5a813ea5f53d209f5fcb","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"journi-eb302","configurations":{"android":"1:391465551122:android:dc5a813ea5f53d209f5fcb","ios":"1:391465551122:ios:033a58db2ea6e0739f5fcb"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "journi-eb302",
+          "appId": "1:391465551122:android:dc5a813ea5f53d209f5fcb",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "journi-eb302",
+          "configurations": {
+            "android": "1:391465551122:android:dc5a813ea5f53d209f5fcb",
+            "ios": "1:391465551122:ios:033a58db2ea6e0739f5fcb"
+          }
+        }
+      }
+    }
+  }
+}

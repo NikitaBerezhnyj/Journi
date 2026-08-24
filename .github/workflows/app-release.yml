@@ -64,7 +64,7 @@ jobs:
           mkdir -p dist
           VERSION=${{ steps.get_version.outputs.version }}
           cp build/app/outputs/flutter-apk/app-release.apk dist/Journi.apk
-          cp build/app/outputs/bundle/release/app-release.aab dist/Journi.aab || true
+          cp build/app/outputs/bundle/release/app-release.aab dist/Journi.aab
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
