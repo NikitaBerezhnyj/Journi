@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "391465551122",
+    "project_id": "journi-eb302",
+    "storage_bucket": "journi-eb302.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391465551122:android:dc5a813ea5f53d209f5fcb",
+        "android_client_info": {
+          "package_name": "com.nikitaberezhnyj.journi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrf2ixlLzEUL0EGVdkiXUgaZyX4yWo_Ok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
