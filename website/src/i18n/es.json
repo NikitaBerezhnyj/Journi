@@ -45,36 +45,48 @@
   },
   "privacy": {
     "title": "Política de privacidad",
-    "updated": "Última actualización: [21.08.2026]",
-    "intro": "Journi (\"la app\", \"nosotros\") respeta tu privacidad. Esta política explica qué datos procesa la app y cómo.",
+    "updated": "Última actualización: [24.08.2026]",
+    "intro": "Journi (la \"aplicación\", \"nosotros\") respeta tu privacidad. Esta política explica qué datos procesa la aplicación, para qué se utilizan y qué datos no recopilamos.",
     "sections": [
       {
-        "h": "Datos que procesamos",
-        "p": "Journi almacena todas tus entradas del diario, datos de rachas y de congelaciones <strong>localmente en tu dispositivo</strong>. No recopilamos, transmitimos ni tenemos acceso al contenido de tus entradas — no se utiliza ningún servidor ni cuenta para ello."
+        "h": "Qué datos procesamos",
+        "p": "Journi almacena tus entradas del diario, datos de racha (streak), congelaciones y otra información básica sobre tu progreso <strong>localmente en tu dispositivo</strong>. El contenido de tus entradas del diario no se envía a nuestros servidores ni se utiliza para análisis."
+      },
+      {
+        "h": "Análisis de uso",
+        "p": "Journi utiliza <strong>Google Firebase Analytics</strong> para obtener estadísticas sobre el uso de las principales funciones de la aplicación. Podemos recopilar eventos relacionados con la creación y el guardado de entradas, el abandono de una entrada, el uso y la restauración de congelaciones, la ruptura y la consecución de hitos de racha (streak), así como la interacción con las notificaciones. Estos eventos pueden contener parámetros técnicos o agregados necesarios para analizar el comportamiento de los usuarios y el funcionamiento de las funciones de la aplicación. <strong>El contenido de las entradas del diario, su texto o cualquier otro dato derivado de su contenido no se envía a Firebase Analytics.</strong> Firebase Analytics también puede recopilar automáticamente cierta información técnica sobre el uso de la aplicación como parte del funcionamiento del servicio de Firebase."
+      },
+      {
+        "h": "Informes de errores",
+        "p": "Journi utiliza <strong>Firebase Crashlytics</strong> para detectar y analizar fallos y errores técnicos de la aplicación. Crashlytics puede procesar información técnica relacionada con un fallo, incluyendo el modelo del dispositivo, el sistema operativo, la versión de la aplicación, la hora del error, los stack traces y los identificadores técnicos necesarios para analizar los fallos. No utilizamos Crashlytics para recopilar ni analizar el contenido de las entradas del diario."
+      },
+      {
+        "h": "Servicios de terceros",
+        "p": "Journi utiliza servicios de <strong>Google Firebase</strong> para análisis y diagnóstico de errores: Firebase Analytics se utiliza para analizar el uso de la aplicación, mientras que Firebase Crashlytics se utiliza para detectar y analizar fallos. Firebase es un servicio de terceros, por lo que la información técnica correspondiente puede ser procesada mediante la infraestructura de Google de acuerdo con sus políticas de privacidad. Journi no utiliza publicidad ni comparte el contenido de las entradas del diario con servicios de terceros."
       },
       {
         "h": "Notificaciones",
-        "p": "La app puede solicitar permiso para enviar notificaciones push locales como recordatorios de escritura. Este permiso se usa únicamente para recordatorios y no está vinculado a ninguna recopilación de datos."
+        "p": "La aplicación puede solicitar permiso para enviar notificaciones push locales como recordatorios para escribir una entrada en el diario. El permiso de notificaciones se utiliza para proporcionar estos recordatorios. Las interacciones con las notificaciones también pueden registrarse en Firebase Analytics como un evento agregado, sin enviar el contenido de las entradas del diario."
       },
       {
-        "h": "Datos de terceros",
-        "p": "Journi no utiliza servicios de análisis, publicidad ni rastreo de terceros."
+        "h": "Qué no recopilamos",
+        "p": "Journi no envía a Firebase ni a otros servicios de terceros el texto de las entradas del diario, palabras o frases individuales de las entradas, el contenido del diario en cualquier otra forma ni datos derivados del contenido de las entradas. Tampoco es necesario crear una cuenta para utilizar las funciones principales de la aplicación."
       },
       {
         "h": "Eliminación de datos",
-        "p": "Dado que todos los datos se almacenan localmente, desinstalar la app elimina permanentemente todas tus entradas y estadísticas. No conservamos copias de seguridad centralizadas de tus datos."
+        "p": "Los datos principales de Journi — entradas del diario, rachas, congelaciones y otras estadísticas almacenadas localmente — se guardan en tu dispositivo. Al desinstalar la aplicación se eliminan los datos almacenados localmente, salvo que el sistema operativo u otro mecanismo de copia de seguridad del sistema los haya conservado. Los datos que ya se hayan enviado a Firebase para análisis o diagnóstico de errores se conservan y eliminan de acuerdo con las políticas y los períodos de conservación de los servicios correspondientes."
       },
       {
         "h": "Menores",
-        "p": "Journi no está destinado a personas menores de 13 años y no recopila datos de menores de forma consciente."
+        "p": "Journi no está destinado a personas menores de 13 años y no recopila conscientemente datos de niños."
       },
       {
         "h": "Cambios en esta política",
-        "p": "Podemos actualizar esta política ocasionalmente. La fecha de la última actualización siempre aparece en la parte superior de esta página."
+        "p": "Podemos actualizar esta política cuando cambien las funciones de la aplicación, las prácticas de procesamiento de datos o los servicios de terceros utilizados. La fecha de la última actualización siempre aparece al principio de esta página."
       }
     ],
     "contact_h": "Contacto",
-    "contact_p": "Preguntas sobre esta política pueden enviarse a:",
+    "contact_p": "Las preguntas sobre esta política pueden enviarse a:",
     "back_home": "← Volver al inicio"
   },
   "how": {
