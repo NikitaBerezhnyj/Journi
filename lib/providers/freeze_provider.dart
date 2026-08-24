@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../services/analytics_service.dart';
 import '../services/freeze_service.dart';
 
 class FreezeState {
@@ -34,7 +35,11 @@ class FreezeNotifier extends AsyncNotifier<FreezeState> {
         .read(freezeServiceProvider)
         .applyFreezeIfNeeded(today: today, diaryMap: diaryMap);
     if (changed) {
-      state = AsyncData(await _load());
+      final newState = await _load();
+      state = AsyncData(newState);
+      AnalyticsService.logFreezeUsed(
+        remainingFreezes: newState.freezesAvailable,
+      );
     }
   }
 
@@ -44,8 +49,13 @@ class FreezeNotifier extends AsyncNotifier<FreezeState> {
   }
 
   Future<void> restoreFreezesIfNeeded() async {
+    final before = state.valueOrNull?.freezesAvailable;
     await ref.read(freezeServiceProvider).restoreFreezesIfNeeded();
-    state = AsyncData(await _load());
+    final newState = await _load();
+    state = AsyncData(newState);
+    if (before != null && newState.freezesAvailable > before) {
+      AnalyticsService.logFreezeRestored();
+    }
   }
 }
 
