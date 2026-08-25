@@ -114,6 +114,7 @@ class FreezeInfoBottomSheet extends StatelessWidget {
             cs: cs,
             theme: theme,
           ),
+          const SizedBox(height: 48),
         ],
       ),
     );
