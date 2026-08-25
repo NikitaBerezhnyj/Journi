@@ -8,6 +8,7 @@
 <link rel="alternate" hreflang="uk" href="https://nikitaberezhnyj.github.io/Journi/uk/{{ hrefSuffix }}">
 <link rel="alternate" hreflang="en" href="https://nikitaberezhnyj.github.io/Journi/en/{{ hrefSuffix }}">
 <link rel="alternate" hreflang="es" href="https://nikitaberezhnyj.github.io/Journi/es/{{ hrefSuffix }}">
+<link rel="alternate" hreflang="fr" href="https://nikitaberezhnyj.github.io/Journi/fr/{{ hrefSuffix }}">
 <link rel="alternate" hreflang="x-default" href="https://nikitaberezhnyj.github.io/Journi/en/{{ hrefSuffix }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,12 +25,22 @@
       {% icon "auto_stories", "icon" %}
       Journi
     </a>
+
     <div class="header-controls">
-      <div class="lang-switch">
-        {% for l in locales %}
-        <a href="../{{ l.code }}/{{ hrefSuffix }}" data-lang="{{ l.code }}" class="{{ 'active' if l.code == t.code else '' }}">{{ l.label }}</a>
-        {% endfor %}
+      <div class="lang-select">
+        <select id="language-select">
+          {% for l in locales %}
+          <option
+            value="../{{ l.code }}/{{ hrefSuffix }}"
+            data-lang="{{ l.code }}"
+            {% if l.code == t.code %}selected{% endif %}
+          >
+            {{ l.label }}
+          </option>
+          {% endfor %}
+        </select>
       </div>
+
       <button id="theme-toggle" class="icon-btn" aria-label="{{ t.nav.theme_toggle }}">
         {% icon "light_mode", "icon icon-sun" %}
         {% icon "dark_mode", "icon icon-moon" %}
