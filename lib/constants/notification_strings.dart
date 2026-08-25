@@ -4,55 +4,67 @@ class NotificationStrings {
       'en': 'Reminders from Journi',
       'uk': 'Нагадування від Journi',
       'es': 'Recordatorios de Journi',
+      'fr': 'Rappels de Journi',
     },
     'channelDescription': {
       'en': 'Daily reminders to write down your thoughts in Journi',
       'uk': 'Щоденні нагадування про записи у твоєму щоденнику Journi',
       'es': 'Recordatorios diarios para escribir tus pensamientos en Journi',
+      'fr': 'Rappels quotidiens pour écrire vos pensées dans Journi',
     },
 
     'reminder24hTitle': {
       'en': 'What happened today?',
       'uk': 'Що сьогодні відбулося?',
       'es': '¿Qué pasó hoy?',
+      'fr': 'Que s’est-il passé aujourd’hui ?',
     },
     'reminder24hBody': {
       'en': 'Write down a thought before it slips your mind',
       'uk': 'Запиши хоча б одну думку, поки вона не забулася',
       'es': 'Anota un pensamiento antes de que se te olvide',
+      'fr': 'Notez une pensée avant de l’oublier',
     },
 
     'reminderEveningTitle': {
       'en': 'Day is almost over',
       'uk': 'День уже добігає кінця',
       'es': 'El día ya termina',
+      'fr': 'La journée touche à sa fin',
     },
     'reminderEveningBody': {
       'en': 'Take a moment to leave a note',
       'uk': 'Знайди час, щоб залишити запис',
       'es': 'Tómate un momento para dejar una nota',
+      'fr': 'Prenez un moment pour laisser une note',
     },
 
     'reminderFreezeWarningTitle': {
       'en': 'Protect your streak',
       'uk': 'Захисти свою серію',
       'es': 'Protege tu racha',
+      'fr': 'Protégez votre série',
     },
     'reminderFreezeWarningBody': {
       'en': 'Write something today before your freeze runs out',
       'uk': 'Зроби запис сьогодні, поки діє заморозка',
       'es': 'Escribe algo hoy antes de que termine tu congelación',
+      'fr':
+          'Écrivez quelque chose aujourd’hui avant que votre protection ne soit utilisée',
     },
 
     'reminderStreakLostTitle': {
       'en': 'Time to start fresh',
       'uk': 'Час почати з чистого аркуша',
       'es': 'Hora de empezar de cero',
+      'fr': 'Il est temps de repartir à zéro',
     },
     'reminderStreakLostBody': {
       'en': 'Your streak reset, but today is the perfect day for a new one',
       'uk': 'Серія обнулилася, але сьогодні ідеальний день щоб почати нову',
       'es': 'Tu racha se reinició, pero hoy es el día ideal para una nueva',
+      'fr':
+          'Votre série a été réinitialisée, mais aujourd’hui est le jour idéal pour en commencer une nouvelle',
     },
   };
 

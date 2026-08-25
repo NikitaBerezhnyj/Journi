@@ -19,6 +19,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     "English": const Locale('en'),
     "Українська": const Locale('uk'),
     "Español": const Locale('es'),
+    "Français": const Locale('fr'),
   };
 
   @override

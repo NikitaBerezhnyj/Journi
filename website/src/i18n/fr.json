@@ -1,0 +1,114 @@
+{
+  "code": "fr",
+  "meta": {
+    "title": "Journi — le journal qui vous aide à écrire chaque jour",
+    "description": "Journi est une application de journal simple qui vous motive grâce aux séries : écrivez chaque jour, maintenez votre série et protégez vos progrès grâce aux protections de série."
+  },
+  "hero": {
+    "title": "Le journal qui vous aide à écrire chaque jour",
+    "subtitle": "Écrivez chaque jour, maintenez votre série et ne perdez jamais vos progrès grâce aux protections de série — même lorsque la vie vous en empêche.",
+    "google_play": "Google Play",
+    "github_apk": "APK depuis GitHub",
+    "download_note": "Version officielle sur Google Play avec mises à jour automatiques. Ou installez directement l’APK depuis GitHub — sans compte Google.",
+    "eyebrow": "Un journal motivé par les séries"
+  },
+  "features": {
+    "title": "Fonctionnalités",
+    "items": [
+      {
+        "icon": "edit_note",
+        "title": "Journal quotidien",
+        "desc": "Écrivez et sauvegardez vos pensées, vos expériences et vos souvenirs au même endroit."
+      },
+      {
+        "icon": "local_fire_department",
+        "title": "Séries",
+        "desc": "Suivez le nombre de jours consécutifs pendant lesquels vous avez tenu votre habitude d’écrire."
+      },
+      {
+        "icon": "ac_unit",
+        "title": "Protections de série",
+        "desc": "Deux protections préservent votre série lorsque vous manquez une journée. Une protection est restaurée après 3 jours consécutifs sans interruption."
+      },
+      {
+        "icon": "notifications",
+        "title": "Notifications",
+        "desc": "Des rappels vous aident à maintenir votre habitude."
+      }
+    ]
+  },
+  "footer": {
+    "privacy": "Politique de confidentialité",
+    "github": "GitHub",
+    "license": "Licence",
+    "rights": "Tous droits réservés."
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "updated": "Dernière mise à jour : [24.08.2026]",
+    "intro": "Journi (l’« application », « nous ») respecte votre vie privée. Cette politique explique quelles données l’application traite, pourquoi elles sont utilisées et quelles données nous ne collectons pas.",
+    "sections": [
+      {
+        "h": "Données que nous traitons",
+        "p": "Journi stocke vos entrées de journal, les données relatives à vos séries, vos protections de série et d’autres informations de base sur votre progression <strong>localement sur votre appareil</strong>. Le contenu de vos entrées de journal n’est pas envoyé à nos serveurs et n’est pas utilisé à des fins d’analyse."
+      },
+      {
+        "h": "Analyse de l’utilisation",
+        "p": "Journi utilise <strong>Google Firebase Analytics</strong> pour collecter des statistiques sur l’utilisation des principales fonctionnalités de l’application. Nous pouvons collecter des événements liés à la création et à l’enregistrement d’entrées de journal, à l’abandon d’une entrée, à l’utilisation et à la restauration de protections de série, à l’interruption d’une série et à l’atteinte de certains paliers, ainsi qu’aux interactions avec les notifications. Ces événements peuvent contenir des paramètres techniques ou agrégés nécessaires à l’analyse du comportement des utilisateurs et de l’utilisation des fonctionnalités de l’application. <strong>Le contenu des entrées de journal, leur texte ou toute autre donnée dérivée de leur contenu n’est pas envoyé à Firebase Analytics.</strong> Firebase Analytics peut également collecter automatiquement certaines informations techniques relatives à l’utilisation de l’application dans le cadre du service Firebase."
+      },
+      {
+        "h": "Rapport de plantages",
+        "p": "Journi utilise <strong>Firebase Crashlytics</strong> pour détecter et analyser les plantages et les erreurs techniques de l’application. Crashlytics peut traiter des informations techniques liées à un plantage, notamment le modèle de l’appareil, le système d’exploitation, la version de l’application, l’horodatage de l’erreur, les traces de la pile d’exécution et les identifiants techniques nécessaires à l’analyse des plantages. Nous n’utilisons pas Crashlytics pour collecter ou analyser le contenu des entrées de journal."
+      },
+      {
+        "h": "Services tiers",
+        "p": "Journi utilise les services <strong>Google Firebase</strong> pour l’analyse et le rapport de plantages : Firebase Analytics est utilisé pour analyser l’utilisation de l’application, tandis que Firebase Crashlytics est utilisé pour détecter et analyser les plantages. Firebase est un service tiers ; certaines informations techniques pertinentes peuvent donc être traitées via l’infrastructure de Google conformément à ses politiques de confidentialité. Journi n’utilise pas de publicité et ne partage pas le contenu des entrées de journal avec des services tiers."
+      },
+      {
+        "h": "Notifications",
+        "p": "L’application peut demander l’autorisation d’envoyer des notifications locales pour vous rappeler d’écrire une entrée dans votre journal. Les autorisations de notification sont utilisées pour fournir ces rappels. Les interactions avec les notifications peuvent également être enregistrées dans Firebase Analytics sous forme d’événements agrégés, sans que le contenu des entrées de journal ne soit envoyé."
+      },
+      {
+        "h": "Données que nous ne collectons pas",
+        "p": "Journi n’envoie pas le texte des entrées de journal, les mots ou expressions individuels qu’elles contiennent, le contenu du journal sous quelque autre forme que ce soit, ni les données dérivées du contenu des entrées à Firebase ou à d’autres services tiers. Nous n’exigeons pas non plus la création d’un compte pour utiliser les principales fonctionnalités de l’application."
+      },
+      {
+        "h": "Suppression des données",
+        "p": "Les principales données de Journi — entrées de journal, séries, protections de série et autres statistiques stockées localement — sont conservées sur votre appareil. La désinstallation de l’application supprime les données stockées localement, sauf si elles ont été conservées par le système d’exploitation ou un autre mécanisme de sauvegarde du système. Les données qui ont déjà été envoyées à Firebase à des fins d’analyse ou de rapport de plantages sont conservées et supprimées conformément aux politiques et aux durées de conservation des services concernés."
+      },
+      {
+        "h": "Enfants",
+        "p": "Journi n’est pas destiné aux personnes âgées de moins de 13 ans et ne collecte pas sciemment de données auprès d’enfants."
+      },
+      {
+        "h": "Modifications de cette politique",
+        "p": "Nous pouvons mettre à jour cette politique lorsque les fonctionnalités de l’application, les pratiques de traitement des données ou les services tiers évoluent. La date de la dernière mise à jour est toujours indiquée au début de cette page."
+      }
+    ],
+    "contact_h": "Contact",
+    "contact_p": "Pour toute question concernant cette politique, vous pouvez nous contacter à l’adresse suivante :",
+    "back_home": "← Retour à l’accueil"
+  },
+  "how": {
+    "title": "Comment ça fonctionne",
+    "subtitle": "Trois étapes simples pour ancrer cette habitude",
+    "steps": [
+      {
+        "title": "Écrivez chaque jour",
+        "desc": "Ouvrez l’application et écrivez quelques lignes — pensées, événements, humeur. Cela ne prend qu’une minute."
+      },
+      {
+        "title": "Maintenez votre série",
+        "desc": "Chaque jour sans interruption prolonge votre série et vous montre le chemin parcouru."
+      },
+      {
+        "title": "Protégez vos progrès",
+        "desc": "Vous avez manqué une journée ? Une protection sauvegarde automatiquement votre série — sans stress ni culpabilité."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Commencez votre série aujourd’hui",
+    "subtitle": "La première entrée ne prend qu’une minute. Ensuite, ce n’est plus qu’une habitude."
+  }
+}

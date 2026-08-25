@@ -13,7 +13,7 @@ class LocaleNotifier extends AsyncNotifier<Locale?> {
       return Locale(saved);
     }
 
-    const supported = ['uk', 'es', 'en'];
+    const supported = ['uk', 'es', 'en', 'fr'];
     final systemCode = PlatformDispatcher.instance.locale.languageCode;
     final resolved = supported.contains(systemCode) ? systemCode : 'en';
 
