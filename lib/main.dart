@@ -19,9 +19,7 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -38,9 +36,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [
-        sharedPrefsProvider.overrideWithValue(prefs),
-      ],
+      overrides: [sharedPrefsProvider.overrideWithValue(prefs)],
       child: const JourniApp(),
     ),
   );
@@ -63,8 +59,8 @@ class JourniApp extends ConsumerWidget {
       title: 'Journi',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF5C6BC0),
-            brightness: Brightness.light,
+          seedColor: const Color(0xFF5C6BC0),
+          brightness: Brightness.light,
         ),
         useMaterial3: true,
       ),
@@ -81,6 +77,7 @@ class JourniApp extends ConsumerWidget {
         Locale('en'),
         Locale('uk'),
         Locale('es'),
+        Locale('fr'),
       ],
       localizationsDelegates: const [
         AppLocalizations.delegate,

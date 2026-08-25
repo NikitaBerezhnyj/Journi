@@ -1,0 +1,86 @@
+{
+  "@@locale": "fr",
+
+  "days_in_row": "{count, plural, one{jour de série} other{jours de série}}",
+  "@days_in_row": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+
+  "settingsTitle": "Paramètres",
+  "languageLabel": "Langue",
+  "themeLabel": "Apparence",
+  "systemThemeLabel": "Système",
+  "lightThemeLabel": "Clair",
+  "darkThemeLabel": "Sombre",
+
+  "monday": "Lundi",
+  "mondayShort": "Lun.",
+  "tuesday": "Mardi",
+  "tuesdayShort": "Mar.",
+  "wednesday": "Mercredi",
+  "wednesdayShort": "Mer.",
+  "thursday": "Jeudi",
+  "thursdayShort": "Jeu.",
+  "friday": "Vendredi",
+  "fridayShort": "Ven.",
+  "saturday": "Samedi",
+  "saturdayShort": "Sam.",
+  "sunday": "Dimanche",
+  "sundayShort": "Dim.",
+
+  "saving": "Enregistrement...",
+  "saved": "Enregistré !",
+
+  "freezeTitle": "Protection de série",
+  "freezeIntroTitle": "Protégez votre série",
+  "freezeIntroDescription": "La vie est faite d’imprévus. Vous avez 2 protections pour préserver votre série si vous manquez une journée.",
+  "freezeAutoRule": "Si vous manquez une journée, une protection s’active automatiquement.",
+  "freezeRestoreRule": "Écrivez pendant 3 jours consécutifs pour récupérer une protection.",
+  "freezeAvailable": "Protections restantes",
+  "freezeOutOf": "sur 2",
+  "freezeGotIt": "Compris",
+  "freezeRestoreNextLabel": "Prochaine protection dans",
+
+  "freezeDays": "{count, plural, one{{count} jour} other{{count} jours}}",
+  "@freezeDays": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "freezeExplanation": "Si vous manquez une journée, une protection préserve votre progression.",
+  "freezeRestoreExplanation": "Écrivez pendant {days} {days, plural, one{jour} other{jours}} consécutifs pour récupérer une protection.",
+  "freezeBreakWarning": "Si vous n’avez plus de protections et que vous manquez une journée, votre série est réinitialisée.",
+
+  "prompt_1": "Comment s’est passée votre journée ?",
+  "prompt_2": "Qu’est-ce qui vous a fait sourire ?",
+  "prompt_3": "Quelle a été la partie la plus difficile ?",
+  "prompt_4": "Quelle petite découverte avez-vous faite ?",
+  "prompt_5": "Pour quoi êtes-vous reconnaissant aujourd’hui ?",
+  "prompt_6": "Quel moment mérite d’être gardé en mémoire ?",
+  "prompt_7": "Qu’avez-vous bien fait aujourd’hui ?",
+  "prompt_8": "Qu’aimeriez-vous changer à votre journée ?",
+  "prompt_9": "Décrivez votre humeur en quelques mots.",
+  "prompt_10": "Qu’est-ce qui vous a pris au dépourvu aujourd’hui ?",
+  "prompt_11": "De quoi êtes-vous fier aujourd’hui ?",
+  "prompt_12": "Qu’est-ce qui vous a le plus épuisé ?",
+  "prompt_13": "Qu’est-ce qui vous a redonné de l’énergie ?",
+  "prompt_14": "Quel petit pas en avant avez-vous fait ?",
+  "prompt_15": "Qu’avez-vous continué à remettre à plus tard ?",
+  "prompt_16": "Quel a été le moment le plus précieux ?",
+  "prompt_17": "Avec qui avez-vous le plus aimé parler ?",
+  "prompt_18": "Quelle émotion vous a le plus animé ?",
+  "prompt_19": "Qu’est-ce qui a rendu cette journée spéciale ?",
+  "prompt_20": "Quelle pensée revenait sans cesse ?",
+  "prompt_21": "Quelle petite attention vous êtes-vous accordée ?",
+  "prompt_22": "De quoi êtes-vous prêt à vous détacher ?",
+  "prompt_23": "Quelle leçon cette journée vous a-t-elle laissée ?",
+  "prompt_24": "Qu’est-ce qui vous a apporté un moment de paix ?",
+  "prompt_25": "Qu’est-ce qui vous a poussé à continuer ?",
+  "prompt_26": "Qu’avez-vous compris sur vous-même ?",
+  "prompt_27": "Quel a été le moment le plus agréable ?",
+  "prompt_28": "De quoi vous souviendrez-vous dans un an ?",
+  "prompt_29": "Qu’est-ce qui vous a causé le plus de stress ?",
+  "prompt_30": "Qu’avez-vous fait malgré votre manque de motivation ?"
+}
